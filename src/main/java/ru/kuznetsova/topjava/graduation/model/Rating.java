@@ -6,13 +6,24 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static ru.kuznetsova.topjava.graduation.model.AbstractEntity.START_SEQ;
 
 @Entity
 @Table(name = "rating")
+@NamedQueries({
+        @NamedQuery(name = Rating.GET_FOR_DATE, query = "SELECT r FROM Rating r WHERE r.date =: date ORDER BY r.restaurant.name"),
+        @NamedQuery(name = Rating.GET_FOR_RESTAURANT, query = "SELECT r FROM Rating r " +
+                "WHERE r.restaurant.id =: restaurantId ORDER BY r.restaurant.date DESC"),
+        @NamedQuery(name = Rating.GET_FOR_DATE_AND_RESTAURANT, query = "SELECT r FROM Rating r " +
+                "WHERE r.restaurant.id =: restaurantId AND r.date =: date")
+})
 public class Rating {
+
+    public static final String GET_FOR_DATE = "Rating.getForDate";
+    public static final String GET_FOR_RESTAURANT = "Rating.getForRestaurant";
+    public static final String GET_FOR_DATE_AND_RESTAURANT = "Rating.getForDateAndRestaurant";
 
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
@@ -25,9 +36,9 @@ public class Rating {
     @NotNull
     private Restaurant restaurant;
 
-    @Column(name = "datetime", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "date", nullable = false, columnDefinition = "date default now()")
     @NotNull
-    private LocalDateTime dateTime;
+    private LocalDate date;
 
     @Column(name = "summary_votes", nullable = false)
     @NotBlank
@@ -52,12 +63,12 @@ public class Rating {
         this.restaurant = restaurant;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Integer getSummaryVotes() {

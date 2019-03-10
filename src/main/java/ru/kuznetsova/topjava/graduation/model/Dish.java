@@ -7,20 +7,19 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "dishes")
+@NamedQuery(name = Dish.GET_FOR_DATE, query = "SELECT d FROM Dish d " +
+        "WHERE d.restaurant.id =: restaurantId AND d.restaurant.date =: date ORDER BY d.name ASC")
 public class Dish extends AbstractEntity {
+
+    public static final String GET_FOR_DATE = "Dish.getForDate";
 
     @Column(name = "price", nullable = false)
     @NotBlank
     @Range(min = 1, max = 10000)
     private int price;
-
-    @Column(name = "datetime", nullable = false, columnDefinition = "timestamp default now()")
-    @NotNull
-    private LocalDateTime dateTime = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -31,11 +30,10 @@ public class Dish extends AbstractEntity {
     public Dish() {
     }
 
-    public Dish(Integer id, @NotBlank @Range(min = 1, max = 10000) int price, @NotNull LocalDateTime dateTime,
+    public Dish(Integer id, @NotBlank @Range(min = 1, max = 10000) int price,
                 @NotNull Restaurant restaurant) {
         super(id);
         this.price = price;
-        this.dateTime = dateTime;
         this.restaurant = restaurant;
     }
 
@@ -55,11 +53,4 @@ public class Dish extends AbstractEntity {
         this.price = price;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
 }

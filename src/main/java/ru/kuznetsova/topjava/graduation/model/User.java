@@ -1,9 +1,6 @@
 package ru.kuznetsova.topjava.graduation.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,8 +10,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users",
         uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-
+@NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email")
 public class User extends AbstractEntity {
+
+    public static final String ALL_SORTED = "User.getAllSorted";
 
     @Column(name = "email", nullable = false, unique = true)
     @Email

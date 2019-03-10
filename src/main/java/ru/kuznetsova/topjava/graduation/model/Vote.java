@@ -5,11 +5,18 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "votes")
+@NamedQueries({
+        @NamedQuery(name = Vote.DELETE_FOR_DATE, query = "DELETE FROM Vote v WHERE v.date >: date"),
+        @NamedQuery(name = Vote.GET, query = "SELECT v FROM Vote v WHERE v.user.id =: userId ORDER BY v.restaurant.name")
+})
 public class Vote {
+
+    public static final String DELETE_FOR_DATE = "Vote.deleteForDate";
+    public static final String GET = "Vote.get";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
@@ -27,18 +34,17 @@ public class Vote {
     @NotNull
     private Restaurant restaurant;
 
-    @Column(name = "datetime", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "date", nullable = false, columnDefinition = "date default now()")
     @NotNull
-    private LocalDateTime datetimeOfVote = LocalDateTime.now();
-
+    private LocalDate date = LocalDate.now();
 
     public Vote() {
     }
 
-    public Vote(User user, Restaurant restaurant, @NotNull LocalDateTime datetimeOfVote) {
+    public Vote(@NotNull User user, @NotNull Restaurant restaurant, @NotNull LocalDate date) {
         this.user = user;
         this.restaurant = restaurant;
-        this.datetimeOfVote = datetimeOfVote;
+        this.date = date;
     }
 
     public Integer getId() {
@@ -65,11 +71,12 @@ public class Vote {
         this.restaurant = restaurant;
     }
 
-    public LocalDateTime getDatetimeOfVote() {
-        return datetimeOfVote;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDatetimeOfVote(LocalDateTime datetimeOfVote) {
-        this.datetimeOfVote = datetimeOfVote;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
+
 }
