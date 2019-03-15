@@ -1,5 +1,7 @@
 package ru.kuznetsova.topjava.graduation.model;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -19,6 +21,7 @@ public class Restaurant extends AbstractEntity {
     public static final String FOR_DATE = "Restaurants.getForDate";
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @BatchSize(size = 200)
     private Set<Dish> dishes;
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")

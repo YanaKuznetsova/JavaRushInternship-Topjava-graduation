@@ -1,5 +1,6 @@
 package ru.kuznetsova.topjava.graduation.model;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -24,6 +25,7 @@ public class Dish extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
+    @BatchSize(size = 200)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 

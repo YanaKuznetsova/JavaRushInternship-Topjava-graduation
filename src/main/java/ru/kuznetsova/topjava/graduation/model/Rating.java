@@ -1,5 +1,6 @@
 package ru.kuznetsova.topjava.graduation.model;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -34,6 +35,7 @@ public class Rating {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
+    @BatchSize(size = 200)
     private Restaurant restaurant;
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")
