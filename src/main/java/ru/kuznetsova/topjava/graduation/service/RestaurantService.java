@@ -1,0 +1,89 @@
+package ru.kuznetsova.topjava.graduation.service;
+
+import javassist.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.util.Assert;
+import ru.kuznetsova.topjava.graduation.model.Dish;
+import ru.kuznetsova.topjava.graduation.model.Restaurant;
+import ru.kuznetsova.topjava.graduation.repository.DishRepository;
+import ru.kuznetsova.topjava.graduation.repository.RestaurantRepository;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static ru.kuznetsova.topjava.graduation.util.ValidationUtil.checkNotFound;
+
+public class RestaurantService {
+
+    private final RestaurantRepository restaurantRepository;
+    private final DishRepository dishRepository;
+
+    @Autowired
+    public RestaurantService(RestaurantRepository restaurantRepository, DishRepository dishRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.dishRepository = dishRepository;
+    }
+
+    @CacheEvict(value = {"restaurants", "restaurantsForToday"}, allEntries = true)
+    public Restaurant addRestaurant(Restaurant restaurant) {
+        Assert.notNull(restaurant, "restaurant must not be null");
+        return restaurantRepository.save(restaurant);
+    }
+
+    @CacheEvict(value = {"menus", "menuForToday"}, allEntries = true)
+    public Dish addDish(Integer restaurantId, Dish dish) {
+        Assert.notNull(dish, "dish must not be null");
+        return dishRepository.save(dish, restaurantId);
+    }
+
+    public Restaurant getRestaurantForDate(Integer restaurantId, LocalDate date) throws NotFoundException {
+        Assert.notNull(date, "date must not be null");
+        return checkNotFound(restaurantRepository.getForDate(date, restaurantId),
+                "restaurant=" + restaurantId + ", date=" + date.toString());
+    }
+
+    public Restaurant getRestaurantForToday(Integer restaurantId) throws NotFoundException {
+        return checkNotFound(restaurantRepository.getForDate(LocalDate.now(), restaurantId),
+                "restaurant=" + restaurantId);
+    }
+
+    public List<Dish> getDishesForDateAndRestaurant(Integer restaurantId, LocalDate date) throws NotFoundException {
+        Assert.notNull(date, "date must not be null");
+        return checkNotFound(dishRepository.getAllForDate(restaurantId, date),
+                "restaurant=" + restaurantId + ", date=" + date.toString());
+    }
+
+    public List<Dish> getDishesForTodayAndRestaurant(Integer restaurantId) throws NotFoundException {
+        return checkNotFound(dishRepository.getAllForDate(restaurantId, LocalDate.now()),
+                "restaurant=" + restaurantId);
+    }
+
+    @Cacheable("menus")
+    public List<Dish> getMenuForDate(LocalDate date) throws NotFoundException {
+        Assert.notNull(date, "date must not be null");
+        return checkNotFound(dishRepository.getMenuForDate(date),
+                "date=" + date.toString());
+    }
+
+    @Cacheable("menuForToday")
+    public List<Dish> getMenuForToday() throws NotFoundException {
+        return checkNotFound(dishRepository.getMenuForDate(LocalDate.now()),
+                "date=" + LocalDate.now().toString());
+    }
+
+    @Cacheable("restaurants")
+    public List<Restaurant> getAllRestaurantsForDate(LocalDate date) throws NotFoundException {
+        Assert.notNull(date, "date must not be null");
+        return checkNotFound(restaurantRepository.getAllForDate(date),
+                "date=" + date.toString());
+    }
+
+    @Cacheable("restaurantsForToday")
+    public List<Restaurant> getAllRestaurantsForToday() throws NotFoundException {
+        return checkNotFound(restaurantRepository.getAllForDate(LocalDate.now()),
+                "date=" + LocalDate.now().toString());
+    }
+
+}

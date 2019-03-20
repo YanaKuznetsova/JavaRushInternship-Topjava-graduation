@@ -11,11 +11,16 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "dishes")
-@NamedQuery(name = Dish.GET_FOR_DATE, query = "SELECT d FROM Dish d " +
-        "WHERE d.restaurant.id =: restaurantId AND d.restaurant.date =: date ORDER BY d.name ASC")
+@NamedQueries({
+        @NamedQuery(name = Dish.GET_FOR_DATE, query = "SELECT d FROM Dish d " +
+                "WHERE d.restaurant.id =: restaurantId AND d.restaurant.date =: date ORDER BY d.name ASC"),
+        @NamedQuery(name = Dish.GET_MENU_FOR_DATE, query = "SELECT d FROM Dish d " +
+                "WHERE d.restaurant.date =: date ORDER BY d.restaurant.name, d.name ASC")
+})
 public class Dish extends AbstractEntity {
 
-    public static final String GET_FOR_DATE = "Dish.getForDate";
+    public static final String GET_FOR_DATE = "Dish.getAllForDate";
+    public static final String GET_MENU_FOR_DATE = "Dish.getMenuForDate";
 
     @Column(name = "price", nullable = false)
     @NotBlank

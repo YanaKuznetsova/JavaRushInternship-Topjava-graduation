@@ -13,12 +13,14 @@ import java.util.Set;
         uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
 @NamedQueries({
         @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT r FROM Restaurant r ORDER BY r.name"),
-        @NamedQuery(name = Restaurant.FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date ORDER BY r.name")
+        @NamedQuery(name = Restaurant.FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date AND r.id=:id"),
+        @NamedQuery(name = Restaurant.ALL_FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date ORDER BY r.name")
 })
 public class Restaurant extends AbstractEntity {
 
     public static final String ALL_SORTED = "Restaurants.getAllSorted";
     public static final String FOR_DATE = "Restaurants.getForDate";
+    public static final String ALL_FOR_DATE = "Restaurants.getAllForDate";
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @BatchSize(size = 200)

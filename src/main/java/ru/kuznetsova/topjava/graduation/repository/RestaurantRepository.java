@@ -29,12 +29,16 @@ public class RestaurantRepository {
         return crudRestaurantRepository.findById(id).orElse(null);
     }
 
+    public Restaurant getForDate(LocalDate date, int id) {
+        return crudRestaurantRepository.getForDate(date, id).orElse(null);
+    }
+
     public List<Restaurant> getAllForDate(LocalDate date) {
-        return crudRestaurantRepository.getForDate(date);
+        return crudRestaurantRepository.getAllForDate(date);
     }
 
     public List<Restaurant> getAllForToday() {
-        return crudRestaurantRepository.getForDate(LocalDate.now());
+        return crudRestaurantRepository.getAllForDate(LocalDate.now());
     }
 
 }

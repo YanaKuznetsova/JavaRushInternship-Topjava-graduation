@@ -40,4 +40,13 @@ public class DishRepository {
         return crudDishRepository.getForDate(date, restaurantId);
     }
 
+    public List<Dish> getMenuForToday() {
+        return crudDishRepository.getMenuForDate(LocalDate.now());
+    }
+
+    public List<Dish> getMenuForDate(LocalDate date) {
+        return crudDishRepository.getMenuForDate(date);
+    }
+
+
 }
