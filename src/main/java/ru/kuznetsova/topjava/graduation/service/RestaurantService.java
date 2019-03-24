@@ -4,6 +4,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.kuznetsova.topjava.graduation.model.Dish;
 import ru.kuznetsova.topjava.graduation.model.Restaurant;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static ru.kuznetsova.topjava.graduation.util.ValidationUtil.checkNotFound;
 
+@Service
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
