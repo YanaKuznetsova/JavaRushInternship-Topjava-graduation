@@ -45,4 +45,15 @@ public class RatingRepository {
         return crudRatingRepository.getForRestaurant(restaurantId);
     }
 
+    public void addNewVote(Integer restaurantId, LocalDate date) {
+        Rating rating = crudRatingRepository.getForRestaurantForDate(restaurantId, date).orElse(null);
+        if (rating != null) {
+            Integer updatedVotes = rating.getSummaryVotes() + 1;
+            rating.setSummaryVotes(updatedVotes);
+        } else {
+            rating = new Rating(crudRestaurantRepository.getOne(restaurantId), date, 1);
+        }
+        crudRatingRepository.save(rating);
+    }
+
 }

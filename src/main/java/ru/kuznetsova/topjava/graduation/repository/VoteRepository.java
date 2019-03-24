@@ -27,8 +27,8 @@ public class VoteRepository {
         return crudVoteRepository.save(vote);
     }
 
-    public Vote get(Integer userId) {
-        return crudVoteRepository.findByUserId(userId).orElse(null);
+    public Vote getByUserAndDate(Integer userId, LocalDate date) {
+        return crudVoteRepository.findByUserIdAndDate(userId, date).orElse(null);
     }
 
     public boolean deleteOldVotes() {

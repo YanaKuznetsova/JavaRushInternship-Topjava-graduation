@@ -22,7 +22,7 @@ import static ru.kuznetsova.topjava.graduation.model.AbstractEntity.START_SEQ;
 })
 public class Rating {
 
-    public static final String GET_FOR_DATE = "Rating.getForDate";
+    public static final String GET_FOR_DATE = "Rating.getAllForDate";
     public static final String GET_FOR_RESTAURANT = "Rating.getForRestaurant";
     public static final String GET_FOR_DATE_AND_RESTAURANT = "Rating.getForDateAndRestaurant";
 
@@ -47,6 +47,12 @@ public class Rating {
     private Integer summaryVotes;
 
     public Rating() {
+    }
+
+    public Rating(@NotNull Restaurant restaurant, @NotNull LocalDate date, @NotBlank Integer summaryVotes) {
+        this.restaurant = restaurant;
+        this.date = date;
+        this.summaryVotes = summaryVotes;
     }
 
     public Integer getId() {
