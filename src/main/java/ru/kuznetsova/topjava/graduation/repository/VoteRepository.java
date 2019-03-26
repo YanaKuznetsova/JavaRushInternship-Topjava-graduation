@@ -31,10 +31,6 @@ public class VoteRepository {
         return crudVoteRepository.findByUserIdAndDate(userId, date).orElse(null);
     }
 
-    public boolean deleteOldVotes() {
-        return crudVoteRepository.deleteForDate(LocalDate.now());
-    }
-
     public boolean deleteOldVotesFromDate(LocalDate date) {
         return crudVoteRepository.deleteForDate(date);
     }

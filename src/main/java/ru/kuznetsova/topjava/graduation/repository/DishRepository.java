@@ -32,20 +32,12 @@ public class DishRepository {
         return crudDishRepository.findById(id).orElse(null);
     }
 
-    public List<Dish> getAllForToday(Integer restaurantId) {
-        return crudDishRepository.getForDate(LocalDate.now(), restaurantId);
+    public List<Dish> getMenuForDate(Integer restaurantId, LocalDate date) {
+        return crudDishRepository.getMenuForDate(date, restaurantId);
     }
 
-    public List<Dish> getAllForDate(Integer restaurantId, LocalDate date) {
-        return crudDishRepository.getForDate(date, restaurantId);
-    }
-
-    public List<Dish> getMenuForToday() {
-        return crudDishRepository.getMenuForDate(LocalDate.now());
-    }
-
-    public List<Dish> getMenuForDate(LocalDate date) {
-        return crudDishRepository.getMenuForDate(date);
+    public List<Dish> getAllMenusForDate(LocalDate date) {
+        return crudDishRepository.getAllMenusForDate(date);
     }
 
 

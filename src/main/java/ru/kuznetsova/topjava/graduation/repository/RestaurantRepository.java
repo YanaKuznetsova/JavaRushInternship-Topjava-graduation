@@ -37,8 +37,4 @@ public class RestaurantRepository {
         return crudRestaurantRepository.getAllForDate(date);
     }
 
-    public List<Restaurant> getAllForToday() {
-        return crudRestaurantRepository.getAllForDate(LocalDate.now());
-    }
-
 }

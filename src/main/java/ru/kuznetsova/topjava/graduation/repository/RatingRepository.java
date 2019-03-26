@@ -25,16 +25,8 @@ public class RatingRepository {
         return crudRatingRepository.save(rating);
     }
 
-    public List<Rating> ratingForToday() {
-        return crudRatingRepository.getForDate(LocalDate.now());
-    }
-
     public List<Rating> ratingForDate(LocalDate date) {
         return crudRatingRepository.getForDate(date);
-    }
-
-    public Rating ratingForRestaurantForToday(Integer restaurantId) {
-        return crudRatingRepository.getForRestaurantForDate(restaurantId, LocalDate.now()).orElse(null);
     }
 
     public Rating ratingForRestaurantForDate(Integer restaurantId, LocalDate date) {
@@ -51,7 +43,7 @@ public class RatingRepository {
             Integer updatedVotes = rating.getSummaryVotes() + 1;
             rating.setSummaryVotes(updatedVotes);
         } else {
-            rating = new Rating(crudRestaurantRepository.getOne(restaurantId), date, 1);
+            rating = new Rating(crudRestaurantRepository.getOne(restaurantId), 1, date);
         }
         crudRatingRepository.save(rating);
     }
