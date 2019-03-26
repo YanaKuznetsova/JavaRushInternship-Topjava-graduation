@@ -14,13 +14,13 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
         @NamedQuery(name = Dish.GET_FOR_DATE, query = "SELECT d FROM Dish d " +
                 "WHERE d.restaurant.id =: restaurantId AND d.restaurant.date =: date ORDER BY d.name ASC"),
-        @NamedQuery(name = Dish.GET_MENU_FOR_DATE, query = "SELECT d FROM Dish d " +
+        @NamedQuery(name = Dish.GET_MENUS_FOR_DATE, query = "SELECT d FROM Dish d " +
                 "WHERE d.restaurant.date =: date ORDER BY d.restaurant.name, d.name ASC")
 })
 public class Dish extends AbstractEntity {
 
-    public static final String GET_FOR_DATE = "Dish.getAllForDate";
-    public static final String GET_MENU_FOR_DATE = "Dish.getMenuForDate";
+    public static final String GET_FOR_DATE = "Dish.getMenuForDate";
+    public static final String GET_MENUS_FOR_DATE = "Dish.getMenusForDate";
 
     @Column(name = "price", nullable = false)
     @NotBlank
@@ -37,9 +37,9 @@ public class Dish extends AbstractEntity {
     public Dish() {
     }
 
-    public Dish(Integer id, @NotBlank @Range(min = 1, max = 10000) int price,
+    public Dish(Integer id, String name, @NotBlank @Range(min = 1, max = 10000) int price,
                 @NotNull Restaurant restaurant) {
-        super(id);
+        super(id, name);
         this.price = price;
         this.restaurant = restaurant;
     }

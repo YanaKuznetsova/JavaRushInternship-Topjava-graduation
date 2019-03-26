@@ -1,5 +1,7 @@
 package ru.kuznetsova.topjava.graduation.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "users",
         uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractEntity {
 
     public static final String ALL_SORTED = "User.getAllSorted";
@@ -26,9 +29,6 @@ public class User extends AbstractEntity {
     @Size(min = 5, max = 100)
     private String password;
 
-    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
-    private boolean enabled = true;
-
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     private LocalDateTime registered = LocalDateTime.now();
@@ -38,6 +38,22 @@ public class User extends AbstractEntity {
     private Role role;
 
     public User() {
+    }
+
+    public User(Integer id, String name, String email, String password, Role role, LocalDateTime registered) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.registered = registered;
+        this.role = role;
+    }
+
+    public User(Integer id, String name, String email, String password, Role role) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.registered = LocalDateTime.now();
+        this.role = role;
     }
 
     public String getEmail() {
@@ -54,14 +70,6 @@ public class User extends AbstractEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public LocalDateTime getRegistered() {

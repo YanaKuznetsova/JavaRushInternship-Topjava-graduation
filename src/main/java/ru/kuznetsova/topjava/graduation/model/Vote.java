@@ -50,7 +50,8 @@ public class Vote {
     public Vote() {
     }
 
-    public Vote(@NotNull User user, @NotNull Restaurant restaurant, @NotNull LocalDate date) {
+    public Vote(@NotNull Integer id, @NotNull User user, @NotNull Restaurant restaurant, @NotNull LocalDate date) {
+        this.id = id;
         this.user = user;
         this.restaurant = restaurant;
         this.date = date;

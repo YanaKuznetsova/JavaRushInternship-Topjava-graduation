@@ -25,8 +25,13 @@ public class AbstractEntity implements Persistable<Integer> {
     public AbstractEntity() {
     }
 
-    AbstractEntity(Integer id) {
+    public AbstractEntity(Integer id) {
         this.id = id;
+    }
+
+    public AbstractEntity(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     @Override
