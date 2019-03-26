@@ -2,6 +2,8 @@ package ru.kuznetsova.topjava.graduation.service;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.kuznetsova.topjava.graduation.model.Rating;
@@ -28,6 +30,7 @@ public class RatingService {
         this.voteRepository = voteRepository;
     }
 
+    @CacheEvict(value = "rating", allEntries = true)
     public void voteForRestaurant(Integer restaurantId, Integer userId) {
         Assert.notNull(restaurantId, "restaurantId must not be null");
         if (LocalTime.now().isBefore(DECISION_TIME)) {
@@ -42,7 +45,7 @@ public class RatingService {
 
     public Rating ratingForRestaurantForToday(Integer restaurantId) throws NotFoundException {
         Assert.notNull(restaurantId, "restaurantId must not be null");
-        return checkNotFound(ratingRepository.ratingForRestaurantForToday(restaurantId),
+        return checkNotFound(ratingRepository.ratingForRestaurantForDate(restaurantId, LocalDate.now()),
                 "restaurant=" + restaurantId);
     }
 
@@ -52,16 +55,19 @@ public class RatingService {
                 "restaurant=" + restaurantId + " date=" + date.toString());
     }
 
+    @CacheEvict(value = "rating", allEntries = true)
     public void deleteOldVotes() {
-        voteRepository.deleteOldVotes();
+        voteRepository.deleteOldVotesFromDate(LocalDate.now());
     }
 
+    @CacheEvict(value = "rating", allEntries = true)
     public void deleteOldVotesForDate(LocalDate date) {
         voteRepository.deleteOldVotesFromDate(date);
     }
 
+    @Cacheable("rating")
     public List<Rating> ratingForToday() throws NotFoundException {
-        return checkNotFound(ratingRepository.ratingForToday(), "rating for today");
+        return checkNotFound(ratingRepository.ratingForDate(LocalDate.now()), "rating for today");
     }
 
     public List<Rating> ratingForDate(LocalDate date) throws NotFoundException {

@@ -53,25 +53,25 @@ public class RestaurantService {
 
     public List<Dish> getDishesForDateAndRestaurant(Integer restaurantId, LocalDate date) throws NotFoundException {
         Assert.notNull(date, "date must not be null");
-        return checkNotFound(dishRepository.getAllForDate(restaurantId, date),
+        return checkNotFound(dishRepository.getMenuForDate(restaurantId, date),
                 "restaurant=" + restaurantId + ", date=" + date.toString());
     }
 
     public List<Dish> getDishesForTodayAndRestaurant(Integer restaurantId) throws NotFoundException {
-        return checkNotFound(dishRepository.getAllForDate(restaurantId, LocalDate.now()),
+        return checkNotFound(dishRepository.getMenuForDate(restaurantId, LocalDate.now()),
                 "restaurant=" + restaurantId);
     }
 
     @Cacheable("menus")
     public List<Dish> getMenuForDate(LocalDate date) throws NotFoundException {
         Assert.notNull(date, "date must not be null");
-        return checkNotFound(dishRepository.getMenuForDate(date),
+        return checkNotFound(dishRepository.getAllMenusForDate(date),
                 "date=" + date.toString());
     }
 
     @Cacheable("menuForToday")
     public List<Dish> getMenuForToday() throws NotFoundException {
-        return checkNotFound(dishRepository.getMenuForDate(LocalDate.now()),
+        return checkNotFound(dishRepository.getAllMenusForDate(LocalDate.now()),
                 "date=" + LocalDate.now().toString());
     }
 
