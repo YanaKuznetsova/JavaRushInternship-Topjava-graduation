@@ -9,14 +9,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users",
         uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-@NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@NamedQueries({
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email"),
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id =:id")
+})
 public class User extends AbstractEntity {
 
     public static final String ALL_SORTED = "User.getAllSorted";
+    public static final String DELETE = "User.delete";
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -34,10 +38,19 @@ public class User extends AbstractEntity {
     private LocalDateTime registered = LocalDateTime.now();
 
     @Column(name = "role")
+    @Enumerated(value = EnumType.STRING)
     @NotNull
     private Role role;
 
     public User() {
+    }
+
+    public User(User user) {
+        super(user.id, user.name);
+        this.email = user.email;
+        this.password = user.password;
+        this.registered = user.registered;
+        this.role = user.role;
     }
 
     public User(Integer id, String name, String email, String password, Role role, LocalDateTime registered) {
@@ -88,4 +101,14 @@ public class User extends AbstractEntity {
         this.role = role;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
