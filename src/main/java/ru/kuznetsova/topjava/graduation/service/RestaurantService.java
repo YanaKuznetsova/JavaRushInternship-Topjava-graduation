@@ -34,6 +34,11 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+    public Restaurant getRestaurantById(Integer id) {
+        Assert.notNull(id, "id must be not null");
+        return restaurantRepository.get(id);
+    }
+
     @CacheEvict(value = {"menus", "menuForToday"}, allEntries = true)
     public Dish addDish(Integer restaurantId, Dish dish) {
         Assert.notNull(dish, "dish must not be null");
@@ -73,6 +78,10 @@ public class RestaurantService {
     public List<Dish> getMenuForToday() throws NotFoundException {
         return checkNotFound(dishRepository.getAllMenusForDate(LocalDate.now()),
                 "date=" + LocalDate.now().toString());
+    }
+
+    public List<Restaurant> getAllRestaurants() {
+        return restaurantRepository.getAll();
     }
 
     @Cacheable("restaurants")
