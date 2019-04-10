@@ -1,6 +1,5 @@
 package ru.kuznetsova.topjava.graduation.model;
 
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -27,21 +26,22 @@ public class Dish extends AbstractEntity {
     @Range(min = 1, max = 10000)
     private int price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
-    @BatchSize(size = 200)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     public Dish() {
     }
 
-    public Dish(Integer id, String name, @NotBlank @Range(min = 1, max = 10000) int price,
-                @NotNull Restaurant restaurant) {
+    public Dish(Dish dish) {
+        this(dish.id, dish.name, dish.price);
+    }
+
+    public Dish(Integer id, String name, @NotBlank @Range(min = 1, max = 10000) int price) {
         super(id, name);
         this.price = price;
-        this.restaurant = restaurant;
     }
 
     public Restaurant getRestaurant() {
@@ -60,4 +60,12 @@ public class Dish extends AbstractEntity {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "price=" + price +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
