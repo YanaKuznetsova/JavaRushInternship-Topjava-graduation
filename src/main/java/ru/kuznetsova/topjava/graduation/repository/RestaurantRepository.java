@@ -29,6 +29,10 @@ public class RestaurantRepository {
         return crudRestaurantRepository.findById(id).orElse(null);
     }
 
+    public List<Restaurant> getAll() {
+        return crudRestaurantRepository.getAll();
+    }
+
     public Restaurant getForDate(LocalDate date, int id) {
         return crudRestaurantRepository.getForDate(date, id).orElse(null);
     }
