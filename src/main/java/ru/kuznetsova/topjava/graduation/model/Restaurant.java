@@ -1,18 +1,16 @@
 package ru.kuznetsova.topjava.graduation.model;
 
-import org.hibernate.annotations.BatchSize;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurants",
         uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_on_date_idx")})
 @NamedQueries({
-        @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT DISTINCT r FROM Restaurant r ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT DISTINCT (r) FROM Restaurant r ORDER BY r.name"),
         @NamedQuery(name = Restaurant.FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date AND r.id=:id"),
         @NamedQuery(name = Restaurant.ALL_FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date ORDER BY r.name")
 })
@@ -20,11 +18,11 @@ public class Restaurant extends AbstractEntity {
 
     public static final String ALL_SORTED = "Restaurants.getAllSorted";
     public static final String FOR_DATE = "Restaurants.getMenuForDate";
-    public static final String ALL_FOR_DATE = "Restaurants.getMenuForDate";
+    public static final String ALL_FOR_DATE = "Restaurants.getAllForDate";
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @BatchSize(size = 200)
-    private Set<Dish> dishes;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
+    @OrderBy("id ASC")
+    protected List<Dish> dishes;
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")
     @NotNull
@@ -33,18 +31,37 @@ public class Restaurant extends AbstractEntity {
     public Restaurant() {
     }
 
+    public Restaurant(Restaurant restaurant) {
+        super(restaurant.id, restaurant.name);
+        this.date = restaurant.date;
+        this.dishes = new ArrayList<>(restaurant.dishes);
+    }
+
     public Restaurant(Integer id, String name, LocalDate date) {
         super(id, name);
         this.date = date;
-        this.dishes = new HashSet<>();
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
-    }
-
-    public void setDishes(Set<Dish> dishes) {
+    public Restaurant(Integer id, String name, LocalDate date, List<Dish> dishes) {
+        super(id, name);
+        this.date = date;
         this.dishes = dishes;
     }
 
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "date=" + date +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
