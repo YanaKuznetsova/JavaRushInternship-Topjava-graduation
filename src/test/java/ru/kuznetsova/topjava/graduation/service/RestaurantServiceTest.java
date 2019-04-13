@@ -1,6 +1,7 @@
 package ru.kuznetsova.topjava.graduation.service;
 
 import javassist.NotFoundException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,12 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     void getAllRestaurantsForDate() throws NotFoundException {
         List<Restaurant> allRestaurantsForDate = restaurantService.getAllRestaurantsForDate(MAY_30_2015);
         assertMatch(allRestaurantsForDate, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
+    }
+
+    @Test
+    void getAllDistinctRestaurantsNames() {
+        Assertions.assertThat(restaurantService.getAllDistinctRestaurantsNames())
+                .isEqualTo(List.of(R1_NAME, R2_NAME, R3_NAME));
     }
 
     @Test

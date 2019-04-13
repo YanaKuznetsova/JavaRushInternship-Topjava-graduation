@@ -29,6 +29,10 @@ public class RestaurantRepository {
         return crudRestaurantRepository.findById(id).orElse(null);
     }
 
+    public List<String> getAllDistinctNames() {
+        return crudRestaurantRepository.getAllDistinctNames();
+    }
+
     public List<Restaurant> getAll() {
         return crudRestaurantRepository.getAll();
     }

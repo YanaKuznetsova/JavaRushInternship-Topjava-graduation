@@ -10,15 +10,17 @@ import java.util.List;
 @Table(name = "restaurants",
         uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_on_date_idx")})
 @NamedQueries({
-        @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT DISTINCT (r) FROM Restaurant r ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.ALL_DISTINCT_NAMES_SORTED, query = "SELECT DISTINCT (r.name) FROM Restaurant r ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT (r) FROM Restaurant r ORDER BY r.name"),
         @NamedQuery(name = Restaurant.FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date AND r.id=:id"),
         @NamedQuery(name = Restaurant.ALL_FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date ORDER BY r.name")
 })
 public class Restaurant extends AbstractEntity {
 
-    public static final String ALL_SORTED = "Restaurants.getAllSorted";
+    public static final String ALL_DISTINCT_NAMES_SORTED = "Restaurants.getAllDistinctNames";
     public static final String FOR_DATE = "Restaurants.getMenuForDate";
     public static final String ALL_FOR_DATE = "Restaurants.getAllForDate";
+    public static final String ALL_SORTED = "Restaurants.getAllSorted";
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
     @OrderBy("id ASC")

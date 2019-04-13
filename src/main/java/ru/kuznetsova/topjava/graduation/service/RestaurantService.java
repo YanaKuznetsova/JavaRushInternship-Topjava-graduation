@@ -80,6 +80,10 @@ public class RestaurantService {
                 "date=" + LocalDate.now().toString());
     }
 
+    public List<String> getAllDistinctRestaurantsNames() {
+        return restaurantRepository.getAllDistinctNames();
+    }
+
     public List<Restaurant> getAllRestaurants() {
         return restaurantRepository.getAll();
     }
