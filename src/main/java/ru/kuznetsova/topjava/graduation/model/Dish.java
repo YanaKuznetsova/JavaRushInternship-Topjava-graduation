@@ -22,7 +22,7 @@ public class Dish extends AbstractEntity {
     public static final String GET_MENUS_FOR_DATE = "Dish.getMenusForDate";
 
     @Column(name = "price", nullable = false)
-    @NotBlank
+    @NotNull
     @Range(min = 1, max = 10000)
     private int price;
 

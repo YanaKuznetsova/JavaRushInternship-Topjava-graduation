@@ -2,6 +2,7 @@ package ru.kuznetsova.topjava.graduation.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsova.topjava.graduation.model.Dish;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class DishRepository {
         this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
+    @Transactional
     public Dish save(Dish dish, Integer restaurantId) {
         dish.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
         return crudDishRepository.save(dish);
