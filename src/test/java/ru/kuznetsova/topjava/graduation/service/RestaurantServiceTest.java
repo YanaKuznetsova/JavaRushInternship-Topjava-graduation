@@ -13,7 +13,6 @@ import ru.kuznetsova.topjava.graduation.util.JpaUtil;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.kuznetsova.topjava.graduation.RestaurantTestData.*;
 
 public class RestaurantServiceTest extends AbstractServiceTest {
@@ -73,8 +72,8 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     void getIncorrectDishesForDateAndRestaurant() throws NotFoundException {
-        assertThrows(NotFoundException.class, () ->
-                restaurantService.getDishesForDateAndRestaurant(RESTAURANT_ID, MAY_31_2015));
+        List<Dish> dishesForDateAndRestaurant = restaurantService.getDishesForDateAndRestaurant(RESTAURANT_ID, MAY_31_2015);
+        org.junit.jupiter.api.Assertions.assertEquals(0, dishesForDateAndRestaurant.size());
     }
 
     @Test
