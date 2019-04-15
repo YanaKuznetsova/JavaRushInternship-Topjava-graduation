@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsova.topjava.graduation.model.Vote;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -20,12 +21,17 @@ public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     @Transactional
     @Modifying
     @Query(name = Vote.DELETE_FOR_DATE)
-    boolean deleteForDate(@Param("date") LocalDate date);
+    int deleteForDate(@Param("date") LocalDate date);
 
     @Query(name = Vote.GET_BY_USER)
     Optional<Vote> findByUserId(@Param("userId") Integer userId);
 
     @Query(name = Vote.GET_BY_USER_AND_DATE)
     Optional<Vote> findByUserIdAndDate(@Param("userId") Integer userId, @Param("date") LocalDate date);
+
+    List<Vote> findAll();
+
+    @Override
+    void delete(Vote entity);
 
 }

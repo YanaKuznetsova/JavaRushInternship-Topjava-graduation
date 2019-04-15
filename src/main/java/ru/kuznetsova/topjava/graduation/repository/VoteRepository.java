@@ -2,9 +2,11 @@ package ru.kuznetsova.topjava.graduation.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsova.topjava.graduation.model.Vote;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class VoteRepository {
@@ -21,6 +23,7 @@ public class VoteRepository {
         this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
+    @Transactional
     public Vote save(Vote vote, Integer userId, Integer restaurantId) {
         vote.setUser(crudUserRepository.getOne(userId));
         vote.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
@@ -32,8 +35,15 @@ public class VoteRepository {
     }
 
     public boolean deleteOldVotesFromDate(LocalDate date) {
-        return crudVoteRepository.deleteForDate(date);
+        return crudVoteRepository.deleteForDate(date) != 0;
     }
 
+    public List<Vote> getAllVotes() {
+        return crudVoteRepository.findAll();
+    }
+
+    public void deleteVote(Vote vote) {
+        crudVoteRepository.delete(vote);
+    }
 
 }
