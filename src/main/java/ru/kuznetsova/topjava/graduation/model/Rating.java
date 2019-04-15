@@ -16,7 +16,7 @@ import static ru.kuznetsova.topjava.graduation.model.AbstractEntity.START_SEQ;
 @NamedQueries({
         @NamedQuery(name = Rating.GET_FOR_DATE, query = "SELECT r FROM Rating r WHERE r.date =: date ORDER BY r.restaurant.name"),
         @NamedQuery(name = Rating.GET_FOR_RESTAURANT, query = "SELECT r FROM Rating r " +
-                "WHERE r.restaurant.id =: restaurantId ORDER BY r.restaurant.date DESC"),
+                "WHERE r.restaurant.name IN (SELECT res.name FROM Restaurant res WHERE res.id =: restaurantId) ORDER BY r.restaurant.date DESC"),
         @NamedQuery(name = Rating.GET_FOR_DATE_AND_RESTAURANT, query = "SELECT r FROM Rating r " +
                 "WHERE r.restaurant.id =: restaurantId AND r.date =: date")
 })
@@ -43,7 +43,7 @@ public class Rating {
     private LocalDate date;
 
     @Column(name = "summary_votes", nullable = false)
-    @NotBlank
+    @NotNull
     private Integer summaryVotes;
 
     public Rating() {
@@ -94,4 +94,14 @@ public class Rating {
     public void setSummaryVotes(Integer summaryVotes) {
         this.summaryVotes = summaryVotes;
     }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "id=" + id +
+                ", date=" + date +
+                ", summaryVotes=" + summaryVotes +
+                '}';
+    }
+
 }

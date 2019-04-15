@@ -63,4 +63,5 @@ public class AbstractEntity implements Persistable<Integer> {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

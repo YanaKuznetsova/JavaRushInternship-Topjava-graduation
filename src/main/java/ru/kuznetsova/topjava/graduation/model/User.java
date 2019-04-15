@@ -111,4 +111,5 @@ public class User extends AbstractEntity {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

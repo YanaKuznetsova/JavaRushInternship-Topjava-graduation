@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "votes")
 @NamedQueries({
-        @NamedQuery(name = Vote.DELETE_FOR_DATE, query = "DELETE FROM Vote v WHERE v.date >: date"),
+        @NamedQuery(name = Vote.DELETE_FOR_DATE, query = "DELETE FROM Vote v WHERE v.date < :date"),
         @NamedQuery(name = Vote.GET_BY_USER, query = "SELECT v FROM Vote v WHERE v.user.id =: userId " +
                 "ORDER BY v.restaurant.name"),
         @NamedQuery(name = Vote.GET_BY_USER_AND_DATE, query = "SELECT v FROM Vote v WHERE v.user.id =: userId " +
@@ -91,6 +91,14 @@ public class Vote {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "id=" + id +
+                ", date=" + date +
+                '}';
     }
 
 }
