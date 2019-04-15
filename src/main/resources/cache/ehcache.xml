@@ -21,5 +21,6 @@
     <cache alias="restaurantsForToday" uses-template="nonExpiryCache"/>
     <cache alias="menus" uses-template="nonExpiryCache"/>
     <cache alias="menuForToday" uses-template="nonExpiryCache"/>
+    <cache alias="rating" uses-template="nonExpiryCache"/>
 
 </config>
