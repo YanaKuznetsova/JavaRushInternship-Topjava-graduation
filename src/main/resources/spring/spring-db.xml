@@ -87,6 +87,6 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
           p:entityManagerFactory-ref="entityManagerFactory"/>
 
-    <bean class="ru.kuznetsova.topjava.graduation.util.JpaUtil"/>
+    <bean class="ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil"/>
 
 </beans>

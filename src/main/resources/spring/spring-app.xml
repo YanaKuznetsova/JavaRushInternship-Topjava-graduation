@@ -6,6 +6,6 @@
 
     <import resource="spring-tools.xml"/>
 
-    <context:component-scan base-package="ru.kuznetsova.topjava.graduation"/>
+    <context:component-scan base-package="ru.kuznetsova.topjava.lunchVotingSystem"/>
 
 </beans>
