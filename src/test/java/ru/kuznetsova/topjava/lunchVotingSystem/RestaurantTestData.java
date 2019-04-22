@@ -57,15 +57,15 @@ public class RestaurantTestData {
     public static final List DISHES_R5 = new ArrayList(Arrays.asList(DISH_R5_1, DISH_R5_2, DISH_R5_3, DISH_R5_4));
     public static final Restaurant RESTAURANT_5 = new Restaurant(RESTAURANT_ID + 4, R3_NAME, MAY_31_2015, DISHES_R5);
 
-    public static void assertMatch(Restaurant actual, Restaurant expected) {
+    public static void assertMatchRestaurants(Restaurant actual, Restaurant expected) {
         Assertions.assertThat(actual).isEqualToIgnoringGivenFields(expected, "dishes");
     }
 
-    public static void assertMatch(Iterable<Restaurant> actual, Restaurant... expected) {
-        assertMatch(actual, List.of(expected));
+    public static void assertMatchRestaurants(Iterable<Restaurant> actual, Restaurant... expected) {
+        assertMatchRestaurants(actual, List.of(expected));
     }
 
-    public static void assertMatch(Iterable<Restaurant> actual, Iterable<Restaurant> expected) {
+    public static void assertMatchRestaurants(Iterable<Restaurant> actual, Iterable<Restaurant> expected) {
         Assertions.assertThat(actual).usingElementComparatorIgnoringFields("dishes").isEqualTo(expected);
     }
 

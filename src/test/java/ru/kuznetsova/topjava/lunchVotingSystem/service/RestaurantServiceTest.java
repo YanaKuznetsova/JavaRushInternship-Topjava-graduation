@@ -39,21 +39,21 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     void addRestaurant() {
         Restaurant newRestaurant = new Restaurant(null, "New restaurant", LocalDate.now());
         restaurantService.addRestaurant(newRestaurant);
-        assertMatch(restaurantService.getAllRestaurants(),
+        assertMatchRestaurants(restaurantService.getAllRestaurants(),
                 RESTAURANT_1, RESTAURANT_2, RESTAURANT_4, newRestaurant, RESTAURANT_3, RESTAURANT_5);
     }
 
     @Test
     void getRestaurantById() {
         Restaurant restaurant = restaurantService.getRestaurantById(RESTAURANT_ID);
-        assertMatch(restaurant, RESTAURANT_1);
+        assertMatchRestaurants(restaurant, RESTAURANT_1);
         assertMatchDishes(restaurant.getDishes(), DISHES_R1);
     }
 
     @Test
     void getRestaurantForDate() throws NotFoundException {
         List<Restaurant> restaurants = restaurantService.getAllRestaurantsForDate(MAY_30_2015);
-        assertMatch(restaurants, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
+        assertMatchRestaurants(restaurants, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     void getAllRestaurantsForDate() throws NotFoundException {
         List<Restaurant> allRestaurantsForDate = restaurantService.getAllRestaurantsForDate(MAY_30_2015);
-        assertMatch(allRestaurantsForDate, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
+        assertMatchRestaurants(allRestaurantsForDate, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     void getAllRestaurants() {
-        assertMatch(restaurantService.getAllRestaurants(),
+        assertMatchRestaurants(restaurantService.getAllRestaurants(),
                 RESTAURANT_1, RESTAURANT_2, RESTAURANT_4, RESTAURANT_3, RESTAURANT_5);
     }
 

@@ -34,15 +34,15 @@ public class RatingTestData {
     public static final Rating RATING_R2_D31 = new Rating(RATING_ID + 3, RESTAURANT_2, 3, LocalDate.of(2015, 5, 31));
     public static final Rating RATING_R3_D31 = new Rating(RATING_ID + 4, RESTAURANT_3, 1, LocalDate.of(2015, 5, 31));
 
-    public static void assertMatch(Rating actual, Rating expected) {
+    public static void assertMatchRatings(Rating actual, Rating expected) {
         Assertions.assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant");
     }
 
-    public static void assertMatch(Iterable<Rating> actual, Rating... expected) {
-        assertMatch(actual, List.of(expected));
+    public static void assertMatchRatings(Iterable<Rating> actual, Rating... expected) {
+        assertMatchRatings(actual, List.of(expected));
     }
 
-    private static void assertMatch(Iterable<Rating> actual, Iterable<Rating> expected) {
+    private static void assertMatchRatings(Iterable<Rating> actual, Iterable<Rating> expected) {
         Assertions.assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
     }
 

@@ -32,15 +32,15 @@ public class UserTestData {
         return Arrays.asList(USER_1, USER_2, USER_3, USER_4, USER_5, ADMIN);
     }
 
-    public static void assertMatch(User actual, User expected) {
+    public static void assertMatchUsers(User actual, User expected) {
         Assertions.assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered");
     }
 
-    public static void assertMatch(Iterable<User> actual, User... expected) {
-        assertMatch(actual, List.of(expected));
+    public static void assertMatchUsers(Iterable<User> actual, User... expected) {
+        assertMatchUsers(actual, List.of(expected));
     }
 
-    public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
+    public static void assertMatchUsers(Iterable<User> actual, Iterable<User> expected) {
         Assertions.assertThat(actual).usingElementComparatorIgnoringFields("registered").isEqualTo(expected);
     }
 

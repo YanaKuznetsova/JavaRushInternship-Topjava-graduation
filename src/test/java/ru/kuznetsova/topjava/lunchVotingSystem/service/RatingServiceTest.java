@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil;
@@ -13,7 +14,6 @@ import ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil;
 import java.util.List;
 
 import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.*;
-import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.assertMatch;
 import static ru.kuznetsova.topjava.lunchVotingSystem.RestaurantTestData.*;
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.USER_ID;
 import static ru.kuznetsova.topjava.lunchVotingSystem.model.Vote.DECISION_TIME;
@@ -62,7 +62,7 @@ public class RatingServiceTest extends AbstractServiceTest {
     @Test
     void ratingForRestaurantForDate() throws NotFoundException {
         Rating rating = ratingService.ratingForRestaurantForDate(RESTAURANT_ID, MAY_30_2015);
-        assertMatch(rating, RATING_R1_D30);
+        RatingTestData.assertMatchRatings(rating, RATING_R1_D30);
     }
 
     @Test
@@ -82,13 +82,13 @@ public class RatingServiceTest extends AbstractServiceTest {
     @Test
     void ratingForDate() throws NotFoundException {
         List<Rating> ratingList = ratingService.ratingForDate(MAY_30_2015);
-        assertMatch(ratingList, RATING_R1_D30, RATING_R2_D30, RATING_R3_D30);
+        assertMatchRatings(ratingList, RATING_R1_D30, RATING_R2_D30, RATING_R3_D30);
     }
 
     @Test
     void ratingForRestaurant() throws NotFoundException {
         List<Rating> raitingList = ratingService.ratingForRestaurant(RESTAURANT_ID + 1);
-        assertMatch(raitingList, RATING_R2_D31, RATING_R2_D30);
+        assertMatchRatings(raitingList, RATING_R2_D31, RATING_R2_D30);
     }
 
     @Test
