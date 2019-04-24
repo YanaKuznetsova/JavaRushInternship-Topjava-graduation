@@ -1,6 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem;
 
 import org.assertj.core.api.Assertions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 
@@ -8,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readFromJsonMvcResult;
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readListFromJsonMvcResult;
 import static ru.kuznetsova.topjava.lunchVotingSystem.model.AbstractEntity.START_SEQ;
 
 public class UserTestData {
@@ -42,6 +45,14 @@ public class UserTestData {
 
     public static void assertMatchUsers(Iterable<User> actual, Iterable<User> expected) {
         Assertions.assertThat(actual).usingElementComparatorIgnoringFields("registered").isEqualTo(expected);
+    }
+
+    public static ResultMatcher getUserMatcher(User... expected) {
+        return result -> assertMatchUsers(readListFromJsonMvcResult(result, User.class), List.of(expected));
+    }
+
+    public static ResultMatcher getUserMatcher(User expected) {
+        return result -> assertMatchUsers(readFromJsonMvcResult(result, User.class), expected);
     }
 
 }
