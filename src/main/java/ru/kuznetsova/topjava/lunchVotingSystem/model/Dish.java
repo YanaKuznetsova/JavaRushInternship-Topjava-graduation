@@ -14,6 +14,11 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
         @NamedQuery(name = Dish.GET_FOR_DATE, query = "SELECT d FROM Dish d " +
                 "WHERE d.restaurant.id =: restaurantId AND d.restaurant.date =: date ORDER BY d.name ASC"),
+        @NamedQuery(name = Dish.GET_MENU_FOR_RESTAURANT, query = "SELECT d FROM Dish d " +
+                "WHERE d.restaurant.id =: restaurantId ORDER BY d.name ASC"),
+        @NamedQuery(name = Dish.GET_DISH_FOR_RESTAURANT, query = "SELECT d FROM Dish d " +
+                "WHERE d.restaurant.id =: restaurantId AND d.id =: id"),
+        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id =:id"),
         @NamedQuery(name = Dish.GET_MENUS_FOR_DATE, query = "SELECT d FROM Dish d " +
                 "WHERE d.restaurant.date =: date ORDER BY d.restaurant.name, d.name ASC")
 })
@@ -21,6 +26,9 @@ public class Dish extends AbstractEntity {
 
     public static final String GET_FOR_DATE = "Dish.getMenuForDate";
     public static final String GET_MENUS_FOR_DATE = "Dish.getMenusForDate";
+    public static final String GET_MENU_FOR_RESTAURANT = "Dish.getMenuForRestaurant";
+    public static final String GET_DISH_FOR_RESTAURANT = "Dish.getDishForRestaurant";
+    public static final String DELETE = "Dish.delete";
 
     @Column(name = "price", nullable = false)
     @NotNull

@@ -15,6 +15,7 @@ import java.util.List;
         @NamedQuery(name = Restaurant.ALL_DISTINCT_NAMES_SORTED, query = "SELECT DISTINCT (r.name) FROM Restaurant r ORDER BY r.name"),
         @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT (r) FROM Restaurant r ORDER BY r.name"),
         @NamedQuery(name = Restaurant.FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date AND r.id=:id"),
+        @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id"),
         @NamedQuery(name = Restaurant.ALL_FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date ORDER BY r.name")
 })
 public class Restaurant extends AbstractEntity {
@@ -23,6 +24,7 @@ public class Restaurant extends AbstractEntity {
     public static final String FOR_DATE = "Restaurants.getMenuForDate";
     public static final String ALL_FOR_DATE = "Restaurants.getAllForDate";
     public static final String ALL_SORTED = "Restaurants.getAllSorted";
+    public static final String DELETE = "Restaurants.delete";
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
     @OrderBy("id ASC")

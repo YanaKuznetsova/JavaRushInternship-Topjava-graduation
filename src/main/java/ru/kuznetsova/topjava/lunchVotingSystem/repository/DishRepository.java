@@ -42,5 +42,11 @@ public class DishRepository {
         return crudDishRepository.getAllMenusForDate(date);
     }
 
+    public List<Dish> getMenuForRestaurant(Integer restaurantId) {
+        return crudDishRepository.getMenuForRestaurant(restaurantId);
+    }
 
+    public Dish getDishForRestaurant(int restaurantId, int dishId) {
+        return crudDishRepository.getDishForRestaurant(restaurantId, dishId).orElse(null);
+    }
 }

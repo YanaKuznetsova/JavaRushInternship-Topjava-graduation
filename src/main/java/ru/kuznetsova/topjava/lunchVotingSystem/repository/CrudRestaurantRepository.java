@@ -20,7 +20,8 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
 
     @Transactional
     @Modifying
-    int deleteById(int id);
+    @Query(name = Restaurant.DELETE)
+    int deleteById(@Param("id") int id);
 
     Optional<Restaurant> findById(Integer id);
 

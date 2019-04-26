@@ -20,7 +20,8 @@ public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
 
     @Transactional
     @Modifying
-    int deleteById(int id);
+    @Query(name = Dish.DELETE)
+    int deleteById(@Param("id") int id);
 
     Optional<Dish> findById(int id);
 
@@ -30,4 +31,9 @@ public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
     @Query(name = Dish.GET_MENUS_FOR_DATE)
     List<Dish> getAllMenusForDate(@Param("date") LocalDate date);
 
+    @Query(name = Dish.GET_MENU_FOR_RESTAURANT)
+    List<Dish> getMenuForRestaurant(@Param("restaurantId") int restaurantId);
+
+    @Query(name = Dish.GET_DISH_FOR_RESTAURANT)
+    Optional<Dish> getDishForRestaurant(int restaurantId, int id);
 }
