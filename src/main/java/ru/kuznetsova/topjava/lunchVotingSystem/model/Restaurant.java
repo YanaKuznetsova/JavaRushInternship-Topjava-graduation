@@ -1,5 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -24,6 +26,7 @@ public class Restaurant extends AbstractEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
     @OrderBy("id ASC")
+    @JsonBackReference
     protected List<Dish> dishes;
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")

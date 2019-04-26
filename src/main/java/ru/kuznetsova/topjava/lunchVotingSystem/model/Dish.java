@@ -1,5 +1,6 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -30,6 +31,7 @@ public class Dish extends AbstractEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
     private Restaurant restaurant;
 
     public Dish() {
