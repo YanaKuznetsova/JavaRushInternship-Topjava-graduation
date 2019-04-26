@@ -6,6 +6,8 @@
 
     <groupId>ru.javawebinar.topjava</groupId>
     <artifactId>lunchVotingSystem</artifactId>
+    <packaging>war</packaging>
+
     <version>1.0-SNAPSHOT</version>
 
     <name>Restaurant voting system</name>
@@ -42,7 +44,7 @@
     </properties>
 
     <build>
-        <finalName>graduation</finalName>
+        <finalName>lunchVotingSystem</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
             <plugin>
