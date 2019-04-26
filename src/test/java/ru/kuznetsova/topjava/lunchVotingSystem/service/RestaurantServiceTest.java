@@ -101,4 +101,41 @@ public class RestaurantServiceTest extends AbstractServiceTest {
                 RESTAURANT_1, RESTAURANT_2, RESTAURANT_4, RESTAURANT_3, RESTAURANT_5);
     }
 
+    @Test
+    void deleteRestaurant() throws NotFoundException {
+        restaurantService.deleteRestaurant(RESTAURANT_ID);
+        assertMatchRestaurants(restaurantService.getAllRestaurants(),
+                RESTAURANT_2, RESTAURANT_4, RESTAURANT_3, RESTAURANT_5);
+    }
+
+    @Test
+    void updateRestaurant() throws NotFoundException {
+        Restaurant updated = new Restaurant(RESTAURANT_1);
+        updated.setName("UpdatedName");
+        restaurantService.updateRestaurant(updated);
+        assertMatchRestaurants(restaurantService.getRestaurantById(RESTAURANT_ID), updated);
+    }
+
+    @Test
+    void deleteDish() throws NotFoundException {
+        restaurantService.deleteDish(RESTAURANT_ID, DISH_ID);
+        List<Dish> dishesForRestaurant = restaurantService.getDishesForRestaurant(RESTAURANT_ID);
+        assertMatchDishes(dishesForRestaurant, DISH_R1_4, DISH_R1_3, DISH_R1_2);
+    }
+
+    @Test
+    void updateDish() throws NotFoundException {
+        Dish updated = new Dish(DISH_R1_1);
+        updated.setName("UpdatedName");
+        restaurantService.updateDish(updated, RESTAURANT_ID);
+        Restaurant restaurant = restaurantService.getRestaurantById(RESTAURANT_ID);
+        assertMatchDishes(restaurant.getDishes(), updated, DISH_R1_2, DISH_R1_3, DISH_R1_4);
+
+    }
+
+    @Test
+    void getDishForRestaurant() throws NotFoundException {
+        Dish dish = restaurantService.getDishForRestaurant(RESTAURANT_ID, DISH_ID);
+        assertMatchDishes(dish, DISH_R1_1);
+    }
 }
