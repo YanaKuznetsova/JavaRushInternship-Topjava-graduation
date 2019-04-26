@@ -1,6 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem;
 
 import org.assertj.core.api.Assertions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
 
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readFromJsonMvcResult;
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readListFromJsonMvcResult;
 import static ru.kuznetsova.topjava.lunchVotingSystem.model.AbstractEntity.START_SEQ;
 
 public class RestaurantTestData {
@@ -69,12 +72,32 @@ public class RestaurantTestData {
         Assertions.assertThat(actual).usingElementComparatorIgnoringFields("dishes").isEqualTo(expected);
     }
 
+    public static void assertMatchDishes(Dish actual, Dish expected) {
+        Assertions.assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant");
+    }
+
     public static void assertMatchDishes(Iterable<Dish> actual, Dish... expected) {
         assertMatchDishes(actual, List.of(expected));
     }
 
     public static void assertMatchDishes(Iterable<Dish> actual, Iterable<Dish> expected) {
         Assertions.assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
+    }
+
+    public static ResultMatcher getRestaurantMatcher(Restaurant... expected) {
+        return result -> assertMatchRestaurants(readListFromJsonMvcResult(result, Restaurant.class), List.of(expected));
+    }
+
+    public static ResultMatcher getRestaurantMatcher(Restaurant expected) {
+        return result -> assertMatchRestaurants(readFromJsonMvcResult(result, Restaurant.class), expected);
+    }
+
+    public static ResultMatcher getDishMatcher(Dish... expected) {
+        return result -> assertMatchDishes(readListFromJsonMvcResult(result, Dish.class), List.of(expected));
+    }
+
+    public static ResultMatcher getDishMatcher(Dish expected) {
+        return result -> assertMatchDishes(readFromJsonMvcResult(result, Dish.class), expected);
     }
 
 }
