@@ -1,11 +1,13 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.web.admin;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.kuznetsova.topjava.lunchVotingSystem.TestUtil;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
+import ru.kuznetsova.topjava.lunchVotingSystem.service.UserService;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.AbstractControllerTest;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.json.JsonUtil;
 
@@ -17,6 +19,9 @@ import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readFromJsonResul
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.*;
 
 class AdminUserRestControllerTest extends AbstractControllerTest {
+
+    @Autowired
+    private UserService userService;
 
     private static final String REST_URL = AdminUserRestController.REST_URL + '/';
 
