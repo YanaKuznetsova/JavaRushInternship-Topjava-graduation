@@ -12,41 +12,42 @@ import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.assure
 import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.checkNew;
 
 public abstract class AbstractUserRestController {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     public List<User> getAll() {
-        log.info("getAll");
-        return service.getAll();
+        log.info("get all users");
+        return userService.getAll();
     }
 
     public User get(int id) throws NotFoundException {
-        log.info("get {}", id);
-        return service.get(id);
+        log.info("get user {}", id);
+        return userService.get(id);
     }
 
     public User create(User user) {
-        log.info("create {}", user);
+        log.info("create user {}", user);
         checkNew(user);
-        return service.create(user);
+        return userService.create(user);
     }
 
     public void delete(int id) throws NotFoundException {
-        log.info("delete {}", id);
-        service.delete(id);
+        log.info("delete user {}", id);
+        userService.delete(id);
     }
 
     public void update(User user, int id) throws NotFoundException {
-        log.info("update {} with id={}", user, id);
+        log.info("update user {} with id={}", user, id);
         assureIdConsistent(user, id);
-        service.update(user);
+        userService.update(user);
     }
 
     public User getByMail(String email) throws NotFoundException {
-        log.info("getByEmail {}", email);
-        return service.getByEmail(email);
+        log.info("get user by email {}", email);
+        return userService.getByEmail(email);
     }
 
 }

@@ -1,0 +1,141 @@
+package ru.kuznetsova.topjava.lunchVotingSystem.web.admin;
+
+import javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
+import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
+import ru.kuznetsova.topjava.lunchVotingSystem.service.RestaurantService;
+
+import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
+
+import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.assureIdConsistent;
+import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.checkNew;
+
+@RestController
+@RequestMapping(AdminRestaurantRestController.REST_URL)
+public class AdminRestaurantRestController {
+
+    static final String REST_URL = "/rest/admin/restaurants";
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private RestaurantService restaurantService;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Restaurant> getAllRestaurants() {
+        log.info("get all restaurants");
+        return restaurantService.getAllRestaurants();
+    }
+
+    @GetMapping(value = "/names",  produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<String> getAllDistinctRestaurantNames() {
+        log.info("get distinct restaurant names");
+        return restaurantService.getAllDistinctRestaurantsNames();
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Restaurant getRestaurantById(@PathVariable("id") int id) {
+        log.info("get restaurant {}", id);
+        return restaurantService.getRestaurantById(id);
+    }
+
+    @GetMapping(value = "/{id}/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Restaurant getRestaurantByIdAndDate(@PathVariable("id") int id, @PathVariable("date") String date)
+            throws NotFoundException {
+        log.info("get restaurant by id {} and date{}", id, date);
+        LocalDate localDate = LocalDate.parse(date);
+        return restaurantService.getRestaurantByIdForDate(id, localDate);
+    }
+
+    @GetMapping(value = "/all/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Restaurant> getAllRestaurantsForDate(@PathVariable("date") String date) throws NotFoundException {
+        log.info("get restaurants by date {}", date);
+        LocalDate localDate = LocalDate.parse(date);
+        return restaurantService.getAllRestaurantsForDate(localDate);
+    }
+
+    @GetMapping(value = "/dishes/{id}/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Dish> getDishesForDateAndRestaurant(@PathVariable("id") int id, @PathVariable("date") String date)
+            throws NotFoundException {
+        log.info("get dishes by id {} and date {}", id, date);
+        LocalDate localDate = LocalDate.parse(date);
+        return restaurantService.getDishesForDateAndRestaurant(id, localDate);
+    }
+
+    @GetMapping(value = "/dishes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Dish> getDishesForRestaurant(@PathVariable("id") int id)
+            throws NotFoundException {
+        log.info("get dishes by restaurant id  {}", id);
+        return restaurantService.getDishesForRestaurant(id);
+    }
+
+    @GetMapping(value = "/dishes/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Dish> getMenuForDate(@PathVariable("date") String date) throws NotFoundException {
+        log.info("get menu for date{}", date);
+        LocalDate localDate = LocalDate.parse(date);
+        return restaurantService.getMenuForDate(localDate);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant) {
+        log.info("add restaurant {}", restaurant);
+        checkNew(restaurant);
+        Restaurant newRestaurant = restaurantService.addRestaurant(restaurant);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(newRestaurant.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(newRestaurant);
+    }
+
+    @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Dish> addDish(@RequestBody Dish dish, @PathVariable("id") int id ) {
+        log.info("add dish {} for restaurant {}", dish, id);
+        checkNew(dish);
+        Dish newDish = restaurantService.addDish(id, dish);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/dishes/{id}/")
+                .buildAndExpand(newDish.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(newDish);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteRestaurant(@PathVariable("id") int id) throws NotFoundException {
+        log.info("delete restaurant {}", id);
+        restaurantService.deleteRestaurant(id);
+    }
+
+    @DeleteMapping(value = "/{id}/{dishId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteDish(@PathVariable("id") int id, @PathVariable("dishId") int dishId) throws NotFoundException {
+        log.info("delete dish {} for restaurant {}", dishId, id);
+        restaurantService.deleteDish(id, dishId);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable("id") int id) throws NotFoundException {
+        log.info("update restaurant {} with id={}", restaurant, id);
+        assureIdConsistent(restaurant, id);
+        restaurantService.updateRestaurant(restaurant);
+    }
+
+    @PutMapping(value = "/{id}/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateDish(@RequestBody Dish dish, @PathVariable("id") int id, @PathVariable("dishId") int dishId)
+            throws NotFoundException {
+        log.info("update dish {} with id={} for restaurant {}", dish, dishId, id);
+        assureIdConsistent(dish, dishId);
+        restaurantService.updateDish(dish, id);
+    }
+
+}
