@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.checkNotFound;
+import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class RestaurantService {
@@ -34,6 +35,17 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+    @CacheEvict(value = {"restaurants", "restaurantsForToday"}, allEntries = true)
+    public void deleteRestaurant(Integer id) throws NotFoundException{
+        checkNotFoundWithId(restaurantRepository.delete(id), id);
+    }
+
+    @CacheEvict(value = {"restaurants", "restaurantsForToday"}, allEntries = true)
+    public void updateRestaurant(Restaurant restaurant) throws NotFoundException {
+        Assert.notNull(restaurant, "restaurant must not be null");
+        checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
+    }
+
     public Restaurant getRestaurantById(Integer id) {
         Assert.notNull(id, "id must be not null");
         return restaurantRepository.get(id);
@@ -45,14 +57,33 @@ public class RestaurantService {
         return dishRepository.save(dish, restaurantId);
     }
 
-    public Restaurant getRestaurantForDate(Integer restaurantId, LocalDate date) throws NotFoundException {
+    @CacheEvict(value = {"menus", "menuForToday"}, allEntries = true)
+    public void deleteDish(int restaurantId, int dishId) throws NotFoundException {
+        getDishForRestaurant(restaurantId, dishId);
+        checkNotFoundWithId(dishRepository.delete(dishId), dishId);
+    }
+
+    @CacheEvict(value = {"menus", "menuForToday"}, allEntries = true)
+    public void updateDish(Dish dish, Integer restaurantId) throws NotFoundException {
+        Assert.notNull(dish, "dish must not be null");
+        checkNotFoundWithId(dishRepository.save(dish, restaurantId), dish.getId());
+    }
+
+    public Restaurant getRestaurantByIdForDate(Integer restaurantId, LocalDate date) throws NotFoundException {
         Assert.notNull(date, "date must not be null");
         return checkNotFound(restaurantRepository.getForDate(date, restaurantId),
                 "restaurant=" + restaurantId + ", date=" + date.toString());
     }
 
-    public Restaurant getRestaurantForToday(Integer restaurantId) throws NotFoundException {
-        return checkNotFound(restaurantRepository.getForDate(LocalDate.now(), restaurantId),
+    // for testing purposes
+    Dish getDishForRestaurant(int restaurantId, int dishId) throws NotFoundException {
+        Dish dish = dishRepository.getDishForRestaurant(restaurantId, dishId);
+        checkNotFoundWithId(dish, dishId);
+        return dish;
+    }
+
+    public List<Dish> getDishesForRestaurant(Integer restaurantId) throws NotFoundException {
+        return checkNotFound(dishRepository.getMenuForRestaurant(restaurantId),
                 "restaurant=" + restaurantId);
     }
 
