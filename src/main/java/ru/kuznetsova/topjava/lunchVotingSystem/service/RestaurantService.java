@@ -82,7 +82,7 @@ public class RestaurantService {
         return dish;
     }
 
-    public List<Dish> getDishesForRestaurant(Integer restaurantId) throws NotFoundException {
+    public List<Dish> getMenuForRestaurant(Integer restaurantId) throws NotFoundException {
         return checkNotFound(dishRepository.getMenuForRestaurant(restaurantId),
                 "restaurant=" + restaurantId);
     }

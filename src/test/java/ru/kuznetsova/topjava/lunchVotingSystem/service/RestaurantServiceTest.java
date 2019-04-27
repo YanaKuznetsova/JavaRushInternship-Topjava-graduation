@@ -119,7 +119,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     void deleteDish() throws NotFoundException {
         restaurantService.deleteDish(RESTAURANT_ID, DISH_ID);
-        List<Dish> dishesForRestaurant = restaurantService.getDishesForRestaurant(RESTAURANT_ID);
+        List<Dish> dishesForRestaurant = restaurantService.getMenuForRestaurant(RESTAURANT_ID);
         assertMatchDishes(dishesForRestaurant, DISH_R1_4, DISH_R1_3, DISH_R1_2);
     }
 
