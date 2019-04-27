@@ -1,6 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,9 @@ import java.util.List;
         @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id"),
         @NamedQuery(name = Restaurant.ALL_FOR_DATE, query = "SELECT r FROM Restaurant r WHERE r.date=:date ORDER BY r.name")
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Restaurant extends AbstractEntity {
 
     public static final String ALL_DISTINCT_NAMES_SORTED = "Restaurants.getAllDistinctNames";
@@ -28,7 +32,6 @@ public class Restaurant extends AbstractEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
     @OrderBy("id ASC")
-    @JsonBackReference
     protected List<Dish> dishes;
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")

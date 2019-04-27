@@ -1,6 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -22,6 +23,9 @@ import javax.validation.constraints.NotNull;
         @NamedQuery(name = Dish.GET_MENUS_FOR_DATE, query = "SELECT d FROM Dish d " +
                 "WHERE d.restaurant.date =: date ORDER BY d.restaurant.name, d.name ASC")
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Dish extends AbstractEntity {
 
     public static final String GET_FOR_DATE = "Dish.getMenuForDate";
@@ -39,7 +43,6 @@ public class Dish extends AbstractEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonManagedReference
     private Restaurant restaurant;
 
     public Dish() {
