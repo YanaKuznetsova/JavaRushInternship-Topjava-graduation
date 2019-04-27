@@ -48,14 +48,6 @@ public class AdminRestaurantRestController {
         return restaurantService.getRestaurantById(id);
     }
 
-    @GetMapping(value = "/{id}/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Restaurant getRestaurantByIdAndDate(@PathVariable("id") int id, @PathVariable("date") String date)
-            throws NotFoundException {
-        log.info("get restaurant by id {} and date{}", id, date);
-        LocalDate localDate = LocalDate.parse(date);
-        return restaurantService.getRestaurantByIdForDate(id, localDate);
-    }
-
     @GetMapping(value = "/all/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getAllRestaurantsForDate(@PathVariable("date") String date) throws NotFoundException {
         log.info("get restaurants by date {}", date);
@@ -63,22 +55,14 @@ public class AdminRestaurantRestController {
         return restaurantService.getAllRestaurantsForDate(localDate);
     }
 
-    @GetMapping(value = "/dishes/{id}/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> getDishesForDateAndRestaurant(@PathVariable("id") int id, @PathVariable("date") String date)
+    @GetMapping(value = "/menu/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Dish> getMenuForRestaurant(@PathVariable("id") int id)
             throws NotFoundException {
-        log.info("get dishes by id {} and date {}", id, date);
-        LocalDate localDate = LocalDate.parse(date);
-        return restaurantService.getDishesForDateAndRestaurant(id, localDate);
+        log.info("get menu by restaurant id  {}", id);
+        return restaurantService.getMenuForRestaurant(id);
     }
 
-    @GetMapping(value = "/dishes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> getDishesForRestaurant(@PathVariable("id") int id)
-            throws NotFoundException {
-        log.info("get dishes by restaurant id  {}", id);
-        return restaurantService.getDishesForRestaurant(id);
-    }
-
-    @GetMapping(value = "/dishes/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/menu/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Dish> getMenuForDate(@PathVariable("date") String date) throws NotFoundException {
         log.info("get menu for date{}", date);
         LocalDate localDate = LocalDate.parse(date);
