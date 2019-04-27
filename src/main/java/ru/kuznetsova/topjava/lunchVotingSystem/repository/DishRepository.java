@@ -34,10 +34,6 @@ public class DishRepository {
         return crudDishRepository.findById(id).orElse(null);
     }
 
-    public List<Dish> getMenuForDate(Integer restaurantId, LocalDate date) {
-        return crudDishRepository.getMenuForDate(date, restaurantId);
-    }
-
     public List<Dish> getAllMenusForDate(LocalDate date) {
         return crudDishRepository.getAllMenusForDate(date);
     }

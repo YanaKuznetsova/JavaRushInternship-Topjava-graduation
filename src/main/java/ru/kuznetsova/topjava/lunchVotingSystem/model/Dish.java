@@ -13,8 +13,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "dishes")
 @NamedQueries({
-        @NamedQuery(name = Dish.GET_FOR_DATE, query = "SELECT d FROM Dish d " +
-                "WHERE d.restaurant.id =: restaurantId AND d.restaurant.date =: date ORDER BY d.name ASC"),
         @NamedQuery(name = Dish.GET_MENU_FOR_RESTAURANT, query = "SELECT d FROM Dish d " +
                 "WHERE d.restaurant.id =: restaurantId ORDER BY d.name ASC"),
         @NamedQuery(name = Dish.GET_DISH_FOR_RESTAURANT, query = "SELECT d FROM Dish d " +
@@ -28,7 +26,6 @@ import javax.validation.constraints.NotNull;
         property = "id")
 public class Dish extends AbstractEntity {
 
-    public static final String GET_FOR_DATE = "Dish.getMenuForDate";
     public static final String GET_MENUS_FOR_DATE = "Dish.getMenusForDate";
     public static final String GET_MENU_FOR_RESTAURANT = "Dish.getMenuForRestaurant";
     public static final String GET_DISH_FOR_RESTAURANT = "Dish.getDishForRestaurant";
