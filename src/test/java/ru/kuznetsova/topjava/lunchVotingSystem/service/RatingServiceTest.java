@@ -87,7 +87,7 @@ public class RatingServiceTest extends AbstractServiceTest {
 
     @Test
     void ratingForRestaurant() throws NotFoundException {
-        List<Rating> raitingList = ratingService.ratingForRestaurant(RESTAURANT_ID + 1);
+        List<Rating> raitingList = ratingService.ratingForRestaurantName(RESTAURANT_ID + 1);
         assertMatchRatings(raitingList, RATING_R2_D31, RATING_R2_D30);
     }
 
