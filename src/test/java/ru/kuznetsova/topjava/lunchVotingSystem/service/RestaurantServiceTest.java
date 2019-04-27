@@ -44,64 +44,6 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getRestaurantById() {
-        Restaurant restaurant = restaurantService.getRestaurantById(RESTAURANT_ID);
-        assertMatchRestaurants(restaurant, RESTAURANT_1);
-        assertMatchDishes(restaurant.getDishes(), DISHES_R1);
-    }
-
-    @Test
-    void getRestaurantForDate() throws NotFoundException {
-        List<Restaurant> restaurants = restaurantService.getAllRestaurantsForDate(MAY_30_2015);
-        assertMatchRestaurants(restaurants, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
-    }
-
-    @Test
-    void addDish() {
-        Dish newDish = new Dish(null, "New dish", 200);
-        restaurantService.addDish(RESTAURANT_ID, newDish);
-        Restaurant restaurant = restaurantService.getRestaurantById(RESTAURANT_ID);
-        assertMatchDishes(restaurant.getDishes(), DISH_R1_1, DISH_R1_2, DISH_R1_3, DISH_R1_4, newDish);
-    }
-
-    @Test
-    void getDishesForDateAndRestaurant() throws NotFoundException {
-        List<Dish> dishes = restaurantService.getDishesForDateAndRestaurant(RESTAURANT_ID, MAY_30_2015);
-        assertMatchDishes(dishes, DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1);
-    }
-
-    @Test
-    void getIncorrectDishesForDateAndRestaurant() throws NotFoundException {
-        List<Dish> dishesForDateAndRestaurant = restaurantService.getDishesForDateAndRestaurant(RESTAURANT_ID, MAY_31_2015);
-        org.junit.jupiter.api.Assertions.assertEquals(0, dishesForDateAndRestaurant.size());
-    }
-
-    @Test
-    void getMenuForDate() throws NotFoundException {
-        List<Dish> menuForDate = restaurantService.getMenuForDate(MAY_30_2015);
-        assertMatchDishes(menuForDate, DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1,
-                DISH_R2_4, DISH_R2_3, DISH_R2_2, DISH_R2_1, DISH_R3_4, DISH_R3_3, DISH_R3_2, DISH_R3_1);
-    }
-
-    @Test
-    void getAllRestaurantsForDate() throws NotFoundException {
-        List<Restaurant> allRestaurantsForDate = restaurantService.getAllRestaurantsForDate(MAY_30_2015);
-        assertMatchRestaurants(allRestaurantsForDate, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
-    }
-
-    @Test
-    void getAllDistinctRestaurantsNames() {
-        Assertions.assertThat(restaurantService.getAllDistinctRestaurantsNames())
-                .isEqualTo(List.of(R1_NAME, R2_NAME, R3_NAME));
-    }
-
-    @Test
-    void getAllRestaurants() {
-        assertMatchRestaurants(restaurantService.getAllRestaurants(),
-                RESTAURANT_1, RESTAURANT_2, RESTAURANT_4, RESTAURANT_3, RESTAURANT_5);
-    }
-
-    @Test
     void deleteRestaurant() throws NotFoundException {
         restaurantService.deleteRestaurant(RESTAURANT_ID);
         assertMatchRestaurants(restaurantService.getAllRestaurants(),
@@ -114,6 +56,22 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         updated.setName("UpdatedName");
         restaurantService.updateRestaurant(updated);
         assertMatchRestaurants(restaurantService.getRestaurantById(RESTAURANT_ID), updated);
+    }
+
+    @Test
+    void getRestaurantById() {
+        Restaurant restaurant = restaurantService.getRestaurantById(RESTAURANT_ID);
+        assertMatchRestaurants(restaurant, RESTAURANT_1);
+        assertMatchDishes(restaurant.getDishes(), DISHES_R1);
+    }
+
+
+    @Test
+    void addDish() {
+        Dish newDish = new Dish(null, "New dish", 200);
+        restaurantService.addDish(RESTAURANT_ID, newDish);
+        Restaurant restaurant = restaurantService.getRestaurantById(RESTAURANT_ID);
+        assertMatchDishes(restaurant.getDishes(), DISH_R1_1, DISH_R1_2, DISH_R1_3, DISH_R1_4, newDish);
     }
 
     @Test
@@ -138,4 +96,36 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         Dish dish = restaurantService.getDishForRestaurant(RESTAURANT_ID, DISH_ID);
         assertMatchDishes(dish, DISH_R1_1);
     }
+
+    @Test
+    void getMenuForRestaurant() throws NotFoundException {
+        List<Dish> dishList = restaurantService.getMenuForRestaurant(RESTAURANT_ID);
+        assertMatchDishes(dishList, DISH_R1_1, DISH_R1_2, DISH_R1_3, DISH_R1_4);
+    }
+
+    @Test
+    void getMenuForDate() throws NotFoundException {
+        List<Dish> menuForDate = restaurantService.getMenuForDate(MAY_30_2015);
+        assertMatchDishes(menuForDate, DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1,
+                DISH_R2_4, DISH_R2_3, DISH_R2_2, DISH_R2_1, DISH_R3_4, DISH_R3_3, DISH_R3_2, DISH_R3_1);
+    }
+
+    @Test
+    void getAllDistinctRestaurantsNames() {
+        Assertions.assertThat(restaurantService.getAllDistinctRestaurantsNames())
+                .isEqualTo(List.of(R1_NAME, R2_NAME, R3_NAME));
+    }
+
+    @Test
+    void getAllRestaurants() {
+        assertMatchRestaurants(restaurantService.getAllRestaurants(),
+                RESTAURANT_1, RESTAURANT_2, RESTAURANT_4, RESTAURANT_3, RESTAURANT_5);
+    }
+
+    @Test
+    void getAllRestaurantsForDate() throws NotFoundException {
+        List<Restaurant> allRestaurantsForDate = restaurantService.getAllRestaurantsForDate(MAY_30_2015);
+        assertMatchRestaurants(allRestaurantsForDate, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
+    }
+
 }
