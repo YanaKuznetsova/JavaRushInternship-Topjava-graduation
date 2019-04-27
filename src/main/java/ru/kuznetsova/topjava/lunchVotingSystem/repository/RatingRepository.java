@@ -35,8 +35,8 @@ public class RatingRepository {
         return crudRatingRepository.getForRestaurantForDate(restaurantId, date).orElse(null);
     }
 
-    public List<Rating> ratingForRestaurant(Integer restaurantId) {
-        return crudRatingRepository.getForRestaurant(restaurantId);
+    public List<Rating> ratingForRestaurantName(Integer restaurantId) {
+        return crudRatingRepository.getForRestaurantName(restaurantId);
     }
 
     @Transactional

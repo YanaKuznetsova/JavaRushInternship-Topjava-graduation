@@ -93,9 +93,9 @@ public class RatingService {
         return checkNotFound(ratingRepository.ratingForDate(date), "rating for day=" + date.toString());
     }
 
-    public List<Rating> ratingForRestaurant(Integer restaurantId) throws NotFoundException {
+    public List<Rating> ratingForRestaurantName(Integer restaurantId) throws NotFoundException {
         Assert.notNull(restaurantId, "newRestaurantId must not be null");
-        return checkNotFound(ratingRepository.ratingForRestaurant(restaurantId),
+        return checkNotFound(ratingRepository.ratingForRestaurantName(restaurantId),
                 "restaurant=" + restaurantId);
     }
 

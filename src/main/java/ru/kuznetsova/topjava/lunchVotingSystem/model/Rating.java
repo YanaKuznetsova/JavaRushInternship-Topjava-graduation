@@ -15,15 +15,15 @@ import static ru.kuznetsova.topjava.lunchVotingSystem.model.AbstractEntity.START
 @Table(name = "rating")
 @NamedQueries({
         @NamedQuery(name = Rating.GET_FOR_DATE, query = "SELECT r FROM Rating r WHERE r.date =: date ORDER BY r.restaurant.name"),
-        @NamedQuery(name = Rating.GET_FOR_RESTAURANT, query = "SELECT r FROM Rating r " +
+        @NamedQuery(name = Rating.GET_FOR_RESTAURANT_NAME, query = "SELECT r FROM Rating r " +
                 "WHERE r.restaurant.name IN (SELECT res.name FROM Restaurant res WHERE res.id =: restaurantId) ORDER BY r.restaurant.date DESC"),
         @NamedQuery(name = Rating.GET_FOR_DATE_AND_RESTAURANT, query = "SELECT r FROM Rating r " +
                 "WHERE r.restaurant.id =: restaurantId AND r.date =: date")
 })
 public class Rating {
 
-    public static final String GET_FOR_DATE = "Rating.getMenuForDate";
-    public static final String GET_FOR_RESTAURANT = "Rating.getForRestaurant";
+    public static final String GET_FOR_DATE = "Rating.getDishesForDate";
+    public static final String GET_FOR_RESTAURANT_NAME = "Rating.getForRestaurantName";
     public static final String GET_FOR_DATE_AND_RESTAURANT = "Rating.getForDateAndRestaurant";
 
     @Id

@@ -26,8 +26,8 @@ public interface CrudRatingRepository extends JpaRepository<Rating, Integer> {
     @Query(name = Rating.GET_FOR_DATE_AND_RESTAURANT)
     Optional<Rating> getForRestaurantForDate(@Param("restaurantId") Integer restaurantId, @Param("date") LocalDate date);
 
-    @Query(name = Rating.GET_FOR_RESTAURANT)
-    List<Rating> getForRestaurant(@Param("restaurantId") Integer restaurantId);
+    @Query(name = Rating.GET_FOR_RESTAURANT_NAME)
+    List<Rating> getForRestaurantName(@Param("restaurantId") Integer restaurantId);
 
     @Override
     void delete(Rating entity);
