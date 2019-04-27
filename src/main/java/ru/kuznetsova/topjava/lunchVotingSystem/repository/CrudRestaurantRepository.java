@@ -31,9 +31,6 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Query(name = Restaurant.ALL_FOR_DATE)
     List<Restaurant> getAllForDate(@Param("date") LocalDate date);
 
-    @Query(name = Restaurant.FOR_DATE)
-    Optional<Restaurant> getForDate(@Param("date") LocalDate date, @Param("id") Integer id);
-
     @Query(name = Restaurant.ALL_SORTED)
     List<Restaurant> getAll();
 }
