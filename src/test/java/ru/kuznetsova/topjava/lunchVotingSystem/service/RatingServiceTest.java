@@ -30,7 +30,7 @@ public class RatingServiceTest extends AbstractServiceTest {
     private JpaUtil jpaUtil;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         cacheManager.getCache("rating").clear();
         jpaUtil.clear2ndLevelHibernateCache();
     }
@@ -39,7 +39,7 @@ public class RatingServiceTest extends AbstractServiceTest {
     void voteForRestaurant() throws NotFoundException {
         ratingService.voteForRestaurant(RESTAURANT_ID, USER_ID, MAY_31_2015, DECISION_TIME.minusHours(1));
         Rating newRating = new Rating(null, RESTAURANT_1, 1, MAY_31_2015);
-        assertMatchNewRatings(ratingService.ratingForDate(MAY_31_2015),
+        assertMatchNewRatings(ratingService.getRatingForDate(MAY_31_2015),
                 List.of(newRating, RATING_R2_D31, RATING_R3_D31));
     }
 
@@ -48,20 +48,20 @@ public class RatingServiceTest extends AbstractServiceTest {
         ratingService.voteForRestaurant(RESTAURANT_ID + 2, USER_ID, MAY_30_2015, DECISION_TIME.minusHours(1));
         Rating newRatingForRestaurant1 = new Rating(null, RESTAURANT_1, 2, MAY_30_2015);
         Rating newRatingForRestaurant3 = new Rating(null, RESTAURANT_3, 2, MAY_30_2015);
-        assertMatchNewRatings(ratingService.ratingForDate(MAY_30_2015),
+        assertMatchNewRatings(ratingService.getRatingForDate(MAY_30_2015),
                 List.of(newRatingForRestaurant1, RATING_R2_D30, newRatingForRestaurant3));
     }
 
     @Test
     void voteForRestaurantAfterDecisionTime() throws NotFoundException {
         ratingService.voteForRestaurant(RESTAURANT_ID + 2, USER_ID, MAY_30_2015, DECISION_TIME.plusHours(1));
-        assertMatchNewRatings(ratingService.ratingForDate(MAY_30_2015),
+        assertMatchNewRatings(ratingService.getRatingForDate(MAY_30_2015),
                 List.of(RATING_R1_D30, RATING_R2_D30, RATING_R3_D30));
     }
 
     @Test
-    void ratingForRestaurantForDate() throws NotFoundException {
-        Rating rating = ratingService.ratingForRestaurantForDate(RESTAURANT_ID, MAY_30_2015);
+    void getRatingForRestaurantForDate() throws NotFoundException {
+        Rating rating = ratingService.getRatingForRestaurantForDate(RESTAURANT_ID, MAY_30_2015);
         RatingTestData.assertMatchRatings(rating, RATING_R1_D30);
     }
 
@@ -80,14 +80,14 @@ public class RatingServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void ratingForDate() throws NotFoundException {
-        List<Rating> ratingList = ratingService.ratingForDate(MAY_30_2015);
+    void getRatingForDate() throws NotFoundException {
+        List<Rating> ratingList = ratingService.getRatingForDate(MAY_30_2015);
         assertMatchRatings(ratingList, RATING_R1_D30, RATING_R2_D30, RATING_R3_D30);
     }
 
     @Test
-    void ratingForRestaurant() throws NotFoundException {
-        List<Rating> raitingList = ratingService.ratingForRestaurantName(RESTAURANT_ID + 1);
+    void getRatingForRestaurant() throws NotFoundException {
+        List<Rating> raitingList = ratingService.getRatingForRestaurantName(RESTAURANT_ID + 1);
         assertMatchRatings(raitingList, RATING_R2_D31, RATING_R2_D30);
     }
 

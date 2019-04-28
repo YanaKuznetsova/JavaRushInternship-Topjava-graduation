@@ -32,16 +32,16 @@ public class RatingService {
     }
 
     @CacheEvict(value = "rating", allEntries = true)
-    public void voteForRestaurant(Integer restaurantId, Integer userId) {
-        voteForRestaurant(restaurantId, userId, LocalDate.now(), LocalTime.now());
+    public Vote voteForRestaurant(Integer restaurantId, Integer userId) {
+        return voteForRestaurant(restaurantId, userId, LocalDate.now(), LocalTime.now());
     }
 
-    // necessary for testing only
     @Transactional
-    void voteForRestaurant(Integer newRestaurantId, Integer userId, LocalDate date, LocalTime time) {
+    Vote voteForRestaurant(Integer newRestaurantId, Integer userId, LocalDate date, LocalTime time) {
         Assert.notNull(newRestaurantId, "newRestaurantId must not be null");
+        Vote vote = null;
         if (time.isBefore(DECISION_TIME)) {
-            Vote vote = getVoteForUserForDate(userId, date);
+            vote = getVoteForUserForDate(userId, date);
             if (vote != null) {
                 voteRepository.deleteVote(vote);
                 Integer oldRestaurantId = vote.getRestaurant().getId();
@@ -51,26 +51,26 @@ public class RatingService {
             voteRepository.save(vote, userId, newRestaurantId);
             ratingRepository.addNewVote(newRestaurantId, date);
         }
+        return vote;
     }
 
-    public Rating ratingForRestaurantForToday(Integer restaurantId) throws NotFoundException {
+    public Rating getRatingForRestaurantForToday(Integer restaurantId) throws NotFoundException {
         Assert.notNull(restaurantId, "newRestaurantId must not be null");
         return checkNotFound(ratingRepository.ratingForRestaurantForDate(restaurantId, LocalDate.now()),
                 "restaurant=" + restaurantId);
     }
 
-    public Rating ratingForRestaurantForDate(Integer restaurantId, LocalDate date) throws NotFoundException {
+    public Rating getRatingForRestaurantForDate(Integer restaurantId, LocalDate date) throws NotFoundException {
         Assert.notNull(restaurantId, "newRestaurantId must not be null");
         return checkNotFound(ratingRepository.ratingForRestaurantForDate(restaurantId, date),
                 "restaurant=" + restaurantId + " date=" + date.toString());
     }
 
-    Vote getVoteForUserForDate(Integer userId, LocalDate date) {
+    public Vote getVoteForUserForDate(Integer userId, LocalDate date) {
         return voteRepository.getByUserAndDate(userId, date);
     }
 
-    // necessary for testing only
-    List<Vote> getAllVotes() {
+    public List<Vote> getAllVotes() {
         return voteRepository.getAllVotes();
     }
 
@@ -85,15 +85,15 @@ public class RatingService {
     }
 
     @Cacheable("rating")
-    public List<Rating> ratingForToday() throws NotFoundException {
+    public List<Rating> getRatingForToday() throws NotFoundException {
         return checkNotFound(ratingRepository.ratingForDate(LocalDate.now()), "rating for today");
     }
 
-    public List<Rating> ratingForDate(LocalDate date) throws NotFoundException {
+    public List<Rating> getRatingForDate(LocalDate date) throws NotFoundException {
         return checkNotFound(ratingRepository.ratingForDate(date), "rating for day=" + date.toString());
     }
 
-    public List<Rating> ratingForRestaurantName(Integer restaurantId) throws NotFoundException {
+    public List<Rating> getRatingForRestaurantName(Integer restaurantId) throws NotFoundException {
         Assert.notNull(restaurantId, "newRestaurantId must not be null");
         return checkNotFound(ratingRepository.ratingForRestaurantName(restaurantId),
                 "restaurant=" + restaurantId);
