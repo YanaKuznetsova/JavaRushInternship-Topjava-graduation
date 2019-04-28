@@ -27,15 +27,15 @@ public class RatingRepository {
         return crudRatingRepository.save(rating);
     }
 
-    public List<Rating> ratingForDate(LocalDate date) {
+    public List<Rating> getRatingForDate(LocalDate date) {
         return crudRatingRepository.getForDate(date);
     }
 
-    public Rating ratingForRestaurantForDate(Integer restaurantId, LocalDate date) {
+    public Rating getRatingForRestaurantForDate(Integer restaurantId, LocalDate date) {
         return crudRatingRepository.getForRestaurantForDate(restaurantId, date).orElse(null);
     }
 
-    public List<Rating> ratingForRestaurantName(Integer restaurantId) {
+    public List<Rating> getRatingForRestaurantName(Integer restaurantId) {
         return crudRatingRepository.getForRestaurantName(restaurantId);
     }
 

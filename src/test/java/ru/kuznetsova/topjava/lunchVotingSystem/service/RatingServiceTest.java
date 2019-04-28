@@ -86,7 +86,7 @@ public class RatingServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getRatingForRestaurant() throws NotFoundException {
+    void getRatingForRestaurantName() throws NotFoundException {
         List<Rating> raitingList = ratingService.getRatingForRestaurantName(RESTAURANT_ID + 1);
         assertMatchRatings(raitingList, RATING_R2_D31, RATING_R2_D30);
     }
@@ -95,6 +95,13 @@ public class RatingServiceTest extends AbstractServiceTest {
     void getVoteForUserForDate() {
         Vote vote = ratingService.getVoteForUserForDate(USER_ID, MAY_30_2015);
         assertMatchVotes(vote, VOTE_U1_D30);
+    }
+
+    @Test
+    void getAllVotes(){
+        List<Vote> voteList = ratingService.getAllVotes();
+        assertMatchVotes(voteList, VOTE_U1_D30, VOTE_U2_D30, VOTE_U3_D30, VOTE_U4_D30, VOTE_U5_D30, VOTE_U2_D31,
+                VOTE_U3_D31, VOTE_U4_D31, VOTE_U5_D31);
     }
 
 }
