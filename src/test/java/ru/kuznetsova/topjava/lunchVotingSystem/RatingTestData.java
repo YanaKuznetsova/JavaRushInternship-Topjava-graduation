@@ -1,6 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem;
 
 import org.assertj.core.api.Assertions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 
@@ -8,6 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static ru.kuznetsova.topjava.lunchVotingSystem.RestaurantTestData.*;
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readFromJsonMvcResult;
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readListFromJsonMvcResult;
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.*;
 import static ru.kuznetsova.topjava.lunchVotingSystem.model.AbstractEntity.START_SEQ;
 
@@ -61,5 +64,22 @@ public class RatingTestData {
     private static void assertMatchVotes(Iterable<Vote> actual, Iterable<Vote> expected) {
         Assertions.assertThat(actual).usingElementComparatorIgnoringFields("restaurant", "user").isEqualTo(expected);
     }
+
+    public static ResultMatcher getRatingMatcher(Rating... expected) {
+        return result -> assertMatchRatings(readListFromJsonMvcResult(result, Rating.class), List.of(expected));
+    }
+
+    public static ResultMatcher getRatingMatcher(Rating expected) {
+        return result -> assertMatchRatings(readFromJsonMvcResult(result, Rating.class), expected);
+    }
+
+    public static ResultMatcher getVoteMatcher(Vote... expected) {
+        return result -> assertMatchVotes(readListFromJsonMvcResult(result, Vote.class), List.of(expected));
+    }
+
+    public static ResultMatcher getVoteMatcher(Vote expected) {
+        return result -> assertMatchVotes(readFromJsonMvcResult(result, Vote.class), expected);
+    }
+
 
 }
