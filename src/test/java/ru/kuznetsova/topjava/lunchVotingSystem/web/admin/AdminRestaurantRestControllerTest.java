@@ -128,7 +128,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
         assertMatchDishes(returnedDish, newDish);
         Restaurant restaurant = restaurantService.getRestaurantById(RESTAURANT_ID);
-        assertMatchDishes(restaurant.getDishes(), DISH_R1_1, DISH_R1_2, DISH_R1_3, DISH_R1_4, newDish);;
+        assertMatchDishes(restaurant.getDishes(), DISH_R1_1, DISH_R1_2, DISH_R1_3, DISH_R1_4, newDish);
     }
 
     @Test
