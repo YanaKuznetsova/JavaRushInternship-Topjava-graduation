@@ -29,7 +29,7 @@ public class Dish extends AbstractEntity {
     public static final String GET_MENUS_FOR_DATE = "Dish.getMenusForDate";
     public static final String GET_MENU_FOR_RESTAURANT = "Dish.getMenuForRestaurant";
     public static final String GET_DISH_FOR_RESTAURANT = "Dish.getDishForRestaurant";
-    public static final String DELETE = "Dish.delete";
+    public static final String DELETE = "Dish.deleteById";
 
     @Column(name = "price", nullable = false)
     @NotNull

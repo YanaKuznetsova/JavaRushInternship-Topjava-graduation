@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class User extends AbstractEntity {
 
     public static final String ALL_SORTED = "User.getAllSorted";
-    public static final String DELETE = "User.delete";
+    public static final String DELETE = "User.deleteById";
 
     @Column(name = "email", nullable = false, unique = true)
     @Email

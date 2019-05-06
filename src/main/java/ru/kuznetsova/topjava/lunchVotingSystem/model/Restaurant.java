@@ -26,7 +26,7 @@ public class Restaurant extends AbstractEntity {
     public static final String ALL_DISTINCT_NAMES_SORTED = "Restaurants.getAllDistinctNames";
     public static final String ALL_FOR_DATE = "Restaurants.getAllForDate";
     public static final String ALL_SORTED = "Restaurants.getAllSorted";
-    public static final String DELETE = "Restaurants.delete";
+    public static final String DELETE = "Restaurants.deleteById";
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
     @OrderBy("id ASC")

@@ -58,13 +58,13 @@ public class AdminRestaurantRestController {
     @GetMapping(value = "/menu/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Dish> getMenuForRestaurant(@PathVariable("id") int id)
             throws NotFoundException {
-        log.info("get menu by restaurant id  {}", id);
+        log.info("get menu by restaurant id {}", id);
         return restaurantService.getMenuForRestaurant(id);
     }
 
-    @GetMapping(value = "/menu/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/menu/date/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Dish> getMenuForDate(@PathVariable("date") String date) throws NotFoundException {
-        log.info("get menu for date{}", date);
+        log.info("get menu for date {}", date);
         LocalDate localDate = LocalDate.parse(date);
         return restaurantService.getMenuForDate(localDate);
     }
@@ -81,13 +81,13 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> addDish(@RequestBody Dish dish, @PathVariable("id") int id ) {
+    public ResponseEntity<Dish> addDish(@RequestBody Dish dish, @PathVariable("id") int id) {
         log.info("add dish {} for restaurant {}", dish, id);
         checkNew(dish);
         Dish newDish = restaurantService.addDish(id, dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/dishes/{id}/")
-                .buildAndExpand(newDish.getId()).toUri();
+                .path(REST_URL + "/{id}/{dishId}")
+                .buildAndExpand(id, newDish.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(newDish);
     }
 

@@ -62,9 +62,10 @@ public class UserVoteRestController {
         return ratingService.getRatingForRestaurantForToday(id);
     }
 
-    @PostMapping(value = "/vote/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Integer> voteForRestaurant(@RequestBody Vote vote, @PathVariable("id") int restaurantId) {
+    @PostMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> voteForRestaurant(@RequestBody Vote vote) {
         int userId = SecurityUtil.authUserId();
+        Integer restaurantId = vote.getRestaurant().getId();
         log.info("add vote for restaurant {} by user {}", restaurantId, userId);
         ratingService.voteForRestaurant(restaurantId, userId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

@@ -59,7 +59,7 @@ public class RestaurantService {
 
     @CacheEvict(value = {"menus", "menuForToday"}, allEntries = true)
     public void deleteDish(int restaurantId, int dishId) throws NotFoundException {
-        getDishForRestaurant(restaurantId, dishId);
+        Assert.notNull(getDishForRestaurant(restaurantId, dishId), "this restaurant has no such dish");
         checkNotFoundWithId(dishRepository.delete(dishId), dishId);
     }
 
