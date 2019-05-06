@@ -58,6 +58,12 @@ public class AdminRatingRestController {
         return ratingService.getVoteForUserForDate(id, localDate);
     }
 
+    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Vote> getVoteForUser(@PathVariable("id") int id) {
+        log.info("get vote for user with id {} ", id);
+        return ratingService.getVoteForUser(id);
+    }
+
     @DeleteMapping()
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteOldVotes() {

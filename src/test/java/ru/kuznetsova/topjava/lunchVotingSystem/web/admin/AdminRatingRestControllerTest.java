@@ -74,6 +74,16 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void getVoteForUser() throws Exception {
+        int userId = USER_ID + 1;
+        mockMvc.perform(get(REST_URL + "user/" + userId))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(getVoteMatcher(VOTE_U2_D30, VOTE_U2_D31));
+    }
+
+    @Test
     void deleteOldVotes() throws Exception {
         mockMvc.perform(delete(REST_URL))
             .andDo(print())

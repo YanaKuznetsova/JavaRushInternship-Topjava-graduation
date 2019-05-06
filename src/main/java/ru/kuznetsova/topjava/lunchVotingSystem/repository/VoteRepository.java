@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -28,6 +29,10 @@ public class VoteRepository {
         vote.setUser(crudUserRepository.getOne(userId));
         vote.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
         return crudVoteRepository.save(vote);
+    }
+
+    public List<Vote> getByUser(Integer userId) {
+        return crudVoteRepository.findByUserId(userId).orElse(Collections.emptyList());
     }
 
     public Vote getByUserAndDate(Integer userId, LocalDate date) {

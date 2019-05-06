@@ -92,6 +92,12 @@ public class RatingServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    void getVoteForUser() {
+        List<Vote> voteList = ratingService.getVoteForUser(USER_ID + 1);
+        assertMatchVotes(voteList, VOTE_U2_D30, VOTE_U2_D31);
+    }
+
+    @Test
     void getVoteForUserForDate() {
         Vote vote = ratingService.getVoteForUserForDate(USER_ID, MAY_30_2015);
         assertMatchVotes(vote, VOTE_U1_D30);

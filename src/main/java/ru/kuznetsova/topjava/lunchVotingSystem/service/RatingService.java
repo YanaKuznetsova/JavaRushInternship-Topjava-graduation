@@ -66,6 +66,10 @@ public class RatingService {
                 "restaurant=" + restaurantId + " date=" + date.toString());
     }
 
+    public List<Vote> getVoteForUser(Integer userId) {
+        return voteRepository.getByUser(userId);
+    }
+
     public Vote getVoteForUserForDate(Integer userId, LocalDate date) {
         return voteRepository.getByUserAndDate(userId, date);
     }
