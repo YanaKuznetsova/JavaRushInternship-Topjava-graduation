@@ -68,7 +68,7 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getNotFound() throws Exception {
+    void getNotFound() {
         assertThrows(NotFoundException.class, () ->
                 userService.get(1));
     }

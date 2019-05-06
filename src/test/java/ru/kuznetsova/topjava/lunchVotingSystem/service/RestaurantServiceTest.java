@@ -100,7 +100,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     void getMenuForRestaurant() throws NotFoundException {
         List<Dish> dishList = restaurantService.getMenuForRestaurant(RESTAURANT_ID);
-        assertMatchDishes(dishList, DISH_R1_1, DISH_R1_2, DISH_R1_3, DISH_R1_4);
+        assertMatchDishes(dishList, DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1);
     }
 
     @Test

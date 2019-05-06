@@ -58,15 +58,6 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getRestaurantByIdAndDate() throws Exception {
-        mockMvc.perform(get(REST_URL + RESTAURANT_ID + "/" + MAY_30_2015))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getRestaurantMatcher(RESTAURANT_1));
-    }
-
-    @Test
     void getAllRestaurantsForDate() throws Exception {
         TestUtil.print(mockMvc.perform(get(REST_URL + "all/" + MAY_31_2015))
                 .andExpect(status().isOk())
@@ -75,16 +66,8 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getDishesForDateAndRestaurant() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL + "dishes/" + RESTAURANT_ID + "/" + MAY_30_2015))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getDishMatcher(DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1)));
-    }
-
-    @Test
     void getMenuForRestaurant() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL + "dishes/" + RESTAURANT_ID))
+        TestUtil.print(mockMvc.perform(get(REST_URL + "menu/" + RESTAURANT_ID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(getDishMatcher(DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1)));
@@ -92,7 +75,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getMenuForDate() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL + "dishes/" + MAY_30_2015))
+        TestUtil.print(mockMvc.perform(get(REST_URL + "menu/date/" + MAY_30_2015))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(getDishMatcher(DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1,
