@@ -23,7 +23,7 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     int deleteById(@Param("id") int id);
 
     @Override
-    Optional<User> findById(Integer id);
+    Optional<User> findById(@Param("id") Integer id);
 
     @Query(name = User.ALL_SORTED)
     List<User> getAll();

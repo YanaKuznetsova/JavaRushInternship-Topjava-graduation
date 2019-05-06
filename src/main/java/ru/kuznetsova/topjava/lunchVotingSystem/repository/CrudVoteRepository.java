@@ -24,7 +24,7 @@ public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     int deleteForDate(@Param("date") LocalDate date);
 
     @Query(name = Vote.GET_BY_USER)
-    Optional<Vote> findByUserId(@Param("userId") Integer userId);
+    Optional<List<Vote>> findByUserId(@Param("userId") Integer userId);
 
     @Query(name = Vote.GET_BY_USER_AND_DATE)
     Optional<Vote> findByUserIdAndDate(@Param("userId") Integer userId, @Param("date") LocalDate date);

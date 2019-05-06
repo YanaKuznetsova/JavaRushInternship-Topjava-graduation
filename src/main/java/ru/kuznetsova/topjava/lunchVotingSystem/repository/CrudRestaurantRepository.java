@@ -23,7 +23,7 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Query(name = Restaurant.DELETE)
     int deleteById(@Param("id") int id);
 
-    Optional<Restaurant> findById(Integer id);
+    Optional<Restaurant> findById(@Param("id") Integer id);
 
     @Query(name = Restaurant.ALL_DISTINCT_NAMES_SORTED)
     List<String> getAllDistinctNames();

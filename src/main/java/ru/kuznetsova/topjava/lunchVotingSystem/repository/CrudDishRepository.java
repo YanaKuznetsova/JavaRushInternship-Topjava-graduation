@@ -32,5 +32,5 @@ public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
     List<Dish> getMenuForRestaurant(@Param("restaurantId") int restaurantId);
 
     @Query(name = Dish.GET_DISH_FOR_RESTAURANT)
-    Optional<Dish> getDishForRestaurant(int restaurantId, int id);
+    Optional<Dish> getDishForRestaurant(@Param("restaurantId") int restaurantId, @Param("id") int id);
 }
