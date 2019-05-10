@@ -1,6 +1,5 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.web.admin;
 
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.RestaurantService;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 import java.net.URI;
 import java.time.LocalDate;

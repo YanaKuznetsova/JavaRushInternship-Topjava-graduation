@@ -1,6 +1,5 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.service;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,6 +9,7 @@ import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
 import ru.kuznetsova.topjava.lunchVotingSystem.repository.DishRepository;
 import ru.kuznetsova.topjava.lunchVotingSystem.repository.RestaurantRepository;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,7 +36,7 @@ public class RestaurantService {
     }
 
     @CacheEvict(value = {"restaurants", "restaurantsForToday"}, allEntries = true)
-    public void deleteRestaurant(Integer id) throws NotFoundException{
+    public void deleteRestaurant(Integer id) throws NotFoundException {
         checkNotFoundWithId(restaurantRepository.delete(id), id);
     }
 

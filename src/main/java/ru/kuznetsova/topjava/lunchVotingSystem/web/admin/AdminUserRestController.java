@@ -1,12 +1,12 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.web.admin;
 
-import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.AbstractUserRestController;
 
 import java.net.URI;

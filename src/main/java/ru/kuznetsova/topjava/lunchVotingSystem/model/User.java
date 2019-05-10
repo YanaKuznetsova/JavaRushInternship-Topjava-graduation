@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email"),
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id =:id")
 })
-public class User extends AbstractEntity {
+public class User extends AbstractEntity implements Serializable {
 
     public static final String ALL_SORTED = "User.getAllSorted";
     public static final String DELETE = "User.deleteById";

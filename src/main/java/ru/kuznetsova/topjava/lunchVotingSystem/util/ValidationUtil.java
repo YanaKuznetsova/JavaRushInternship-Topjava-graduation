@@ -1,7 +1,8 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.util;
 
-import javassist.NotFoundException;
+
 import ru.kuznetsova.topjava.lunchVotingSystem.model.AbstractEntity;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 public class ValidationUtil {
 

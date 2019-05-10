@@ -1,6 +1,5 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.service;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -11,6 +10,7 @@ import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.repository.RatingRepository;
 import ru.kuznetsova.topjava.lunchVotingSystem.repository.VoteRepository;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
