@@ -14,7 +14,7 @@ import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.USER_1;
 class JsonUtilTest {
 
    @Test
-    void testReadWriteValue() throws Exception {
+    void testReadWriteValue() {
         String json = JsonUtil.writeValue(USER_1);
         System.out.println(json);
         User user = JsonUtil.readValue(json, User.class);
@@ -22,7 +22,7 @@ class JsonUtilTest {
     }
 
     @Test
-    void testReadWriteValues() throws Exception {
+    void testReadWriteValues() {
         String json = JsonUtil.writeValue(DISHES_R1);
         System.out.println(json);
         List<Dish> dishes = JsonUtil.readValues(json, Dish.class);
