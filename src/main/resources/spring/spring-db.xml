@@ -33,7 +33,7 @@
     <!--<context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>-->
 
     <!--&lt;!&ndash;no pooling&ndash;&gt;-->
-    <!--<bean id="dataSource"-->
+    <!--<bean restaurantId="dataSource"-->
     <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
     <!--p:driverClassName="org.hsqldb.jdbcDriver"-->
     <!--p:url="${database.url}"-->
@@ -44,7 +44,7 @@
     <!--<beans profile="postgres">-->
     <!--<context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>-->
 
-    <!--<bean id="dataSource"-->
+    <!--<bean restaurantId="dataSource"-->
     <!--class="org.apache.tomcat.jdbc.pool.DataSource"-->
     <!--p:driverClassName="org.postgresql.Driver"-->
     <!--p:url="${database.url}"-->
