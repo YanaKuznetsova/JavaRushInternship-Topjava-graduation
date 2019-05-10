@@ -18,6 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.*;
 import static ru.kuznetsova.topjava.lunchVotingSystem.RestaurantTestData.*;
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.userHttpBasic;
+import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.ADMIN;
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.USER_ID;
 
 class AdminRatingRestControllerTest extends AbstractControllerTest {
@@ -29,7 +31,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getRatingForDate() throws Exception {
-        mockMvc.perform(get(REST_URL + "all/" + MAY_30_2015))
+        mockMvc.perform(get(REST_URL + "all/" + MAY_30_2015)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -38,7 +41,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllVotes() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL + "all"))
+        TestUtil.print(mockMvc.perform(get(REST_URL + "all")
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(getVoteMatcher(VOTE_U1_D30, VOTE_U2_D30, VOTE_U3_D30, VOTE_U4_D30, VOTE_U5_D30, VOTE_U2_D31,
@@ -48,7 +52,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
     @Test
     void getRatingForRestaurantName() throws Exception {
         int id = RESTAURANT_ID + 1;
-        mockMvc.perform(get(REST_URL + id))
+        mockMvc.perform(get(REST_URL + id)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -57,7 +62,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getRatingForRestaurantForDate() throws Exception {
-        mockMvc.perform(get(REST_URL + RESTAURANT_ID + "/" + MAY_30_2015))
+        mockMvc.perform(get(REST_URL + RESTAURANT_ID + "/" + MAY_30_2015)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -66,7 +72,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getVoteForUserForDate() throws Exception {
-        mockMvc.perform(get(REST_URL + "user/" + USER_ID + "/" + MAY_30_2015))
+        mockMvc.perform(get(REST_URL + "user/" + USER_ID + "/" + MAY_30_2015)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -76,7 +83,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
     @Test
     void getVoteForUser() throws Exception {
         int userId = USER_ID + 1;
-        mockMvc.perform(get(REST_URL + "user/" + userId))
+        mockMvc.perform(get(REST_URL + "user/" + userId)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -85,7 +93,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void deleteOldVotes() throws Exception {
-        mockMvc.perform(delete(REST_URL))
+        mockMvc.perform(delete(REST_URL)
+            .with(userHttpBasic(ADMIN)))
             .andDo(print())
             .andExpect(status().isNoContent());
 
@@ -95,7 +104,8 @@ class AdminRatingRestControllerTest extends AbstractControllerTest {
 
     @Test
     void deleteOldVotesForDate() throws Exception {
-        mockMvc.perform(delete(REST_URL + MAY_31_2015))
+        mockMvc.perform(delete(REST_URL + MAY_31_2015)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 

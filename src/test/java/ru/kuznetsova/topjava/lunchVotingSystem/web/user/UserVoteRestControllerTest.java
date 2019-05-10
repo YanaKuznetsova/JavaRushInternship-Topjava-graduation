@@ -20,6 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.*;
 import static ru.kuznetsova.topjava.lunchVotingSystem.RestaurantTestData.*;
 import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readFromJsonResultActions;
+import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.userAuth;
+import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.USER_1;
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.USER_ID;
 import static ru.kuznetsova.topjava.lunchVotingSystem.model.Vote.DECISION_TIME;
 
@@ -32,7 +34,8 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getMenuForRestaurant() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL + "menu/" + RESTAURANT_ID))
+        TestUtil.print(mockMvc.perform(get(REST_URL + "menu/" + RESTAURANT_ID)
+                .with(userAuth(USER_1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(getDishMatcher(DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1)));
@@ -42,7 +45,8 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
     void voteForRestaurant() throws Exception {
         Vote newVote = ratingService.voteForRestaurant(RESTAURANT_ID, USER_ID, MAY_31_2015, DECISION_TIME.minusHours(1));
 
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + "vote/" + RESTAURANT_ID)
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + "vote")
+                .with(userAuth(USER_1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVote)))
                 .andExpect(status().isCreated());
