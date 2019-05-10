@@ -1,6 +1,5 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.service;
 
-import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.dao.DataAccessException;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -29,7 +29,7 @@ public class UserServiceTest extends AbstractServiceTest {
     private JpaUtil jpaUtil;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         cacheManager.getCache("users").clear();
         jpaUtil.clear2ndLevelHibernateCache();
     }
@@ -50,19 +50,19 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void delete() throws Exception {
+    void delete() {
         userService.delete(USER_ID);
         assertMatchUsers(userService.getAll(), ADMIN, USER_2, USER_3, USER_4, USER_5);
     }
 
     @Test
-    void deletedNotFound() throws Exception {
+    void deletedNotFound() {
         assertThrows(NotFoundException.class, () ->
                 userService.delete(1));
     }
 
     @Test
-    void get() throws Exception {
+    void get() {
         User user = userService.get(USER_ID);
         assertMatchUsers(user, USER_1);
     }

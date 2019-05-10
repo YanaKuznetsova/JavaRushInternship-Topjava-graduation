@@ -1,6 +1,5 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.service;
 
-import javassist.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +9,7 @@ import ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.service;
 
-import javassist.NotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +8,7 @@ import org.springframework.cache.CacheManager;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil;
+import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,7 +27,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     private JpaUtil jpaUtil;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         cacheManager.getCache("restaurants").clear();
         cacheManager.getCache("restaurantsForToday").clear();
         cacheManager.getCache("menus").clear();
