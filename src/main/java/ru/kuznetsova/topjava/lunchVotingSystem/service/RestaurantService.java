@@ -70,7 +70,7 @@ public class RestaurantService {
     }
 
     // for testing purposes
-    Dish getDishForRestaurant(int restaurantId, int dishId) throws NotFoundException {
+    protected Dish getDishForRestaurant(int restaurantId, int dishId) throws NotFoundException {
         Dish dish = dishRepository.getDishForRestaurant(restaurantId, dishId);
         checkNotFoundWithId(dish, dishId);
         return dish;
