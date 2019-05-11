@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
-import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
@@ -95,11 +94,11 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     void testValidation() {
         validateRootCause(() -> userService.create(new User(null, "  ", "mail@yandex.ru", "password",
-                Role.ROLE_USER)), ConstraintViolationException.class);
+                ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> userService.create(new User(null, "User", "  ", "password",
-                Role.ROLE_USER)), ConstraintViolationException.class);
+                ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> userService.create(new User(null, "User", "mail@yandex.ru", "",
-                Role.ROLE_USER)), ConstraintViolationException.class);
+                ROLE_USER)), ConstraintViolationException.class);
     }
 
 }

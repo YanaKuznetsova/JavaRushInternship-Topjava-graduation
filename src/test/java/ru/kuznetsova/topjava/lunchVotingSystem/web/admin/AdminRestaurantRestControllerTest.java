@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kuznetsova.topjava.lunchVotingSystem.TestUtil;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
@@ -91,7 +90,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     void addRestaurant() throws Exception {
         Restaurant newRestaurant = new Restaurant(null, "New restaurant", LocalDate.now());
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+        ResultActions action = mockMvc.perform(post(REST_URL)
                 .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newRestaurant)))
@@ -108,7 +107,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     void addDish() throws Exception {
         Dish newDish = new Dish(null, "New dish", 200);
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + RESTAURANT_ID)
+        ResultActions action = mockMvc.perform(post(REST_URL + RESTAURANT_ID)
                 .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newDish)))

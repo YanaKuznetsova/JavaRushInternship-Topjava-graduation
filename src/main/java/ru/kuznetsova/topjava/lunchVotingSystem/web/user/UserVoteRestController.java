@@ -10,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.RatingService;
-import ru.kuznetsova.topjava.lunchVotingSystem.service.RestaurantService;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.SecurityUtil;
 
@@ -23,9 +22,6 @@ public class UserVoteRestController {
 
     static final String REST_URL = "/rest/rating";
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private RestaurantService restaurantService;
 
     @Autowired
     private RatingService ratingService;
