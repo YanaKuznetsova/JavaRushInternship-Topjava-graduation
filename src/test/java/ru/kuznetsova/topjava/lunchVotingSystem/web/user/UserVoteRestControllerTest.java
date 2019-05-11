@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kuznetsova.topjava.lunchVotingSystem.TestUtil;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.RatingService;
@@ -14,8 +13,6 @@ import ru.kuznetsova.topjava.lunchVotingSystem.web.json.JsonUtil;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.*;
 import static ru.kuznetsova.topjava.lunchVotingSystem.RestaurantTestData.*;
@@ -31,15 +28,6 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
 
     @Autowired
     private RatingService ratingService;
-
-    @Test
-    void getMenuForRestaurant() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL + "menu/" + RESTAURANT_ID)
-                .with(userAuth(USER_1)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(getDishMatcher(DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1)));
-    }
 
     @Test
     void voteForRestaurant() throws Exception {

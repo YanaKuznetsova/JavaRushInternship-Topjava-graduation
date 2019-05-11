@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
+import ru.kuznetsova.topjava.lunchVotingSystem.web.json.JsonUtil;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -53,6 +54,10 @@ public class UserTestData {
 
     public static ResultMatcher getUserMatcher(User expected) {
         return result -> assertMatchUsers(readFromJsonMvcResult(result, User.class), expected);
+    }
+
+    public static String jsonWithPassword(User user, String password) {
+        return JsonUtil.writeAdditionProps(user, "password1", password);
     }
 
 }
