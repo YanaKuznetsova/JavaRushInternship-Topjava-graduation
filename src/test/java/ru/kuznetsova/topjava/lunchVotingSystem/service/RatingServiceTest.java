@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.JpaUtil;
@@ -62,7 +61,7 @@ public class RatingServiceTest extends AbstractServiceTest {
     @Test
     void getRatingForRestaurantForDate() throws NotFoundException {
         Rating rating = ratingService.getRatingForRestaurantForDate(RESTAURANT_ID, MAY_30_2015);
-        RatingTestData.assertMatchRatings(rating, RATING_R1_D30);
+        assertMatchRatings(rating, RATING_R1_D30);
     }
 
     @Test
