@@ -37,7 +37,7 @@ public class RestaurantService {
 
     @CacheEvict(value = {"restaurants", "restaurantsForToday"}, allEntries = true)
     public void deleteRestaurant(Integer id) throws NotFoundException {
-        checkNotFoundWithId(restaurantRepository.delete(id), id);
+        checkNotFoundWithId(id, restaurantRepository.delete(id));
     }
 
     @CacheEvict(value = {"restaurants", "restaurantsForToday"}, allEntries = true)
@@ -60,7 +60,7 @@ public class RestaurantService {
     @CacheEvict(value = {"menus", "menuForToday"}, allEntries = true)
     public void deleteDish(int restaurantId, int dishId) throws NotFoundException {
         Assert.notNull(getDishForRestaurant(restaurantId, dishId), "this restaurant has no such dish");
-        checkNotFoundWithId(dishRepository.delete(dishId), dishId);
+        checkNotFoundWithId(dishId, dishRepository.delete(dishId));
     }
 
     @CacheEvict(value = {"menus", "menuForToday"}, allEntries = true)

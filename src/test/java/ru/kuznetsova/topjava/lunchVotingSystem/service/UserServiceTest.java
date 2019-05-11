@@ -58,7 +58,7 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     void deletedNotFound() {
         assertThrows(NotFoundException.class, () ->
-                userService.delete(1));
+                userService.delete(11));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class UserServiceTest extends AbstractServiceTest {
                 Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> userService.create(new User(null, "User", "  ", "password",
                 Role.ROLE_USER)), ConstraintViolationException.class);
-        validateRootCause(() -> userService.create(new User(null, "User", "mail@yandex.ru", "  ",
+        validateRootCause(() -> userService.create(new User(null, "User", "mail@yandex.ru", "",
                 Role.ROLE_USER)), ConstraintViolationException.class);
     }
 

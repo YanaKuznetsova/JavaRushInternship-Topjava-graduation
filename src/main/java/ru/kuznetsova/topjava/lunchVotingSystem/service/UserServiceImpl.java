@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public void delete(int id) throws NotFoundException {
-        checkNotFoundWithId(userRepository.delete(id), id);
+        checkNotFoundWithId(id, userRepository.delete(id));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void update(User user) throws NotFoundException {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(prepareToSave(user, passwordEncoder), user.getId());
+        checkNotFoundWithId(userRepository.save(prepareToSave(user, passwordEncoder)), user.getId());
     }
 
     @Override
