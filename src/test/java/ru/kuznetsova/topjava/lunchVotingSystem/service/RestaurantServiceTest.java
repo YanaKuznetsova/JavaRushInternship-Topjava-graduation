@@ -128,4 +128,10 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         assertMatchRestaurants(allRestaurantsForDate, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
     }
 
+    @Test
+    void getDishById() {
+        Dish dish = restaurantService.getDishById(DISH_ID);
+        assertMatchDishes(dish, DISH_R1_1);
+    }
+
 }

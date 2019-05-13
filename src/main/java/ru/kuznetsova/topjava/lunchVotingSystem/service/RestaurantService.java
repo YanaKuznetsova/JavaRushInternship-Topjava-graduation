@@ -115,4 +115,7 @@ public class RestaurantService {
                 "date=" + LocalDate.now().toString());
     }
 
+    public Dish getDishById(int dishId) {
+        return checkNotFound(dishRepository.get(dishId), "id=" + dishId);
+    }
 }
