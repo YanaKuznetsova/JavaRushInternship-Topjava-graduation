@@ -9,7 +9,6 @@ import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.UserService;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.AbstractControllerTest;
-import ru.kuznetsova.topjava.lunchVotingSystem.web.json.JsonUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -59,9 +58,9 @@ class AdminUserRestControllerTest extends AbstractControllerTest {
         User updated = new User(USER_1);
         updated.setName("UpdatedName");
         mockMvc.perform(put(REST_URL + USER_ID)
-                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(updated, USER_1.getPassword())))
                 .andExpect(status().isNoContent());
 
         assertMatchUsers(userService.get(USER_ID), updated);
