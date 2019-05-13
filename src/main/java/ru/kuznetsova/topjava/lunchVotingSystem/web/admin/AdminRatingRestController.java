@@ -14,8 +14,10 @@ import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.kuznetsova.topjava.lunchVotingSystem.web.admin.AdminRatingRestController.REST_URL;
+
 @RestController
-@RequestMapping(AdminRatingRestController.REST_URL)
+@RequestMapping(REST_URL)
 public class AdminRatingRestController {
 
     static final String REST_URL = "/rest/admin/rating";

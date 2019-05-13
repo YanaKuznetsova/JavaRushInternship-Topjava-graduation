@@ -9,11 +9,14 @@ import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.AbstractUserRestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static ru.kuznetsova.topjava.lunchVotingSystem.web.admin.AdminUserRestController.REST_URL;
+
 @RestController
-@RequestMapping(AdminUserRestController.REST_URL)
+@RequestMapping(REST_URL)
 public class AdminUserRestController extends AbstractUserRestController {
 
     static final String REST_URL = "/rest/admin/users";
@@ -31,7 +34,7 @@ public class AdminUserRestController extends AbstractUserRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@RequestBody User user) {
+    public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         User created = super.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -49,7 +52,7 @@ public class AdminUserRestController extends AbstractUserRestController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable("id") int id) throws NotFoundException {
+    public void update(@Valid @RequestBody User user, @PathVariable("id") int id) throws NotFoundException {
         super.update(user, id);
     }
 

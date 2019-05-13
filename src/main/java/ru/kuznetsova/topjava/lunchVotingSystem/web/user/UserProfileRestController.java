@@ -8,9 +8,12 @@ import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.AbstractUserRestController;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.SecurityUtil;
 
-@RestController
-@RequestMapping(UserProfileRestController.REST_URL)
+import javax.validation.Valid;
 
+import static ru.kuznetsova.topjava.lunchVotingSystem.web.user.UserProfileRestController.REST_URL;
+
+@RestController
+@RequestMapping(REST_URL)
 public class UserProfileRestController extends AbstractUserRestController {
 
     static final String REST_URL = "/rest/profile";
@@ -28,7 +31,7 @@ public class UserProfileRestController extends AbstractUserRestController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user) throws NotFoundException {
+    public void update(@Valid @RequestBody User user) throws NotFoundException {
         super.update(user, SecurityUtil.authUserId());
     }
 
