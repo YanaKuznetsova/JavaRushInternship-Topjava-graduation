@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.UserService;
-import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.ErrorType;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.json.JsonUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -19,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readFromJsonResultActions;
 import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.userHttpBasic;
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.*;
-import static ru.kuznetsova.topjava.lunchVotingSystem.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 import static ru.kuznetsova.topjava.lunchVotingSystem.web.RootController.REST_URL;
 
 class RootControllerTest extends AbstractControllerTest {
@@ -54,11 +52,9 @@ class RootControllerTest extends AbstractControllerTest {
         newUser.setEmail(ADMIN.getEmail());
         mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(userHttpBasic(ADMIN))
+                .with(userHttpBasic(USER_1))
                 .content(JsonUtil.writeValue(newUser)))
-                .andExpect(status().isConflict())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
-                .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL));
+                .andExpect(status().isForbidden());
     }
 
 }
