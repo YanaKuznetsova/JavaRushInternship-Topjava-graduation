@@ -38,6 +38,13 @@ public class UserVoteRestController {
         return ratingService.getRatingForRestaurantForToday(id);
     }
 
+    @GetMapping(value = "/vote", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Vote showCurrentVote() {
+        int userId = SecurityUtil.authUserId();
+        log.info("show vote made by user {}", userId);
+        return ratingService.getVoteForUserForDate(userId, LocalDate.now());
+    }
+
     @PostMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> voteForRestaurant(@RequestBody Vote vote) {
         int userId = SecurityUtil.authUserId();

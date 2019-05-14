@@ -48,4 +48,26 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
                 List.of(newRating, RATING_R2_D31, RATING_R3_D31));
     }
 
+    @Test
+    void getMenuForRestaurant() throws Exception {
+        TestUtil.print(mockMvc.perform(get(REST_URL + "/menu/" + RESTAURANT_ID)
+                .with(userAuth(USER_1)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(getDishMatcher(DISH_R1_4, DISH_R1_3, DISH_R1_2, DISH_R1_1)));
+    }
+
+    @Test
+    void showCurrentVote() throws Exception {
+        Vote userVote = ratingService.voteForRestaurant(RESTAURANT_ID, USER_ID, LocalDate.now(),
+                DECISION_TIME.minusHours(1));
+
+        TestUtil.print(mockMvc.perform(get(REST_URL + "/vote")
+                .with(userAuth(USER_1)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(getVoteMatcher(userVote)));
+
+    }
+
 }
