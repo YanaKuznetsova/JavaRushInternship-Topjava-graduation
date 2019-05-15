@@ -1,5 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,6 +20,9 @@ import java.time.LocalTime;
         @NamedQuery(name = Vote.GET_BY_USER_AND_DATE, query = "SELECT v FROM Vote v WHERE v.user.id =: userId " +
                 "AND v.date =: date ORDER BY v.restaurant.name")
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id", scope = Vote.class)
 public class Vote {
 
     public static final LocalTime DECISION_TIME = LocalTime.of(11, 00);

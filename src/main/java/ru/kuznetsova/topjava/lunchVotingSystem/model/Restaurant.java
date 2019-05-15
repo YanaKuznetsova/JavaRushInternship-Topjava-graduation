@@ -20,7 +20,7 @@ import java.util.List;
 })
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+        property = "id", scope = Restaurant.class)
 public class Restaurant extends AbstractEntity {
 
     public static final String ALL_DISTINCT_NAMES_SORTED = "Restaurants.getAllDistinctNames";

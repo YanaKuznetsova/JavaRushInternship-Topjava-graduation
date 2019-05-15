@@ -1,5 +1,7 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -20,6 +22,9 @@ import static ru.kuznetsova.topjava.lunchVotingSystem.model.AbstractEntity.START
         @NamedQuery(name = Rating.GET_FOR_DATE_AND_RESTAURANT, query = "SELECT r FROM Rating r " +
                 "WHERE r.restaurant.id =: restaurantId AND r.date =: date")
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id", scope = Rating.class)
 public class Rating {
 
     public static final String GET_FOR_DATE = "Rating.getDishesForDate";

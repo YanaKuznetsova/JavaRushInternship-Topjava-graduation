@@ -1,6 +1,8 @@
 package ru.kuznetsova.topjava.lunchVotingSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -19,6 +21,9 @@ import java.time.LocalDateTime;
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email"),
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id =:id")
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id", scope = User.class)
 public class User extends AbstractEntity implements Serializable {
 
     public static final String ALL_SORTED = "User.getAllSorted";
