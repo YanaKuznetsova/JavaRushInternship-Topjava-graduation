@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/YanaKuznetsova/JavaRushInternship-Topjava-graduation.svg?branch=master)](https://travis-ci.com/YanaKuznetsova/JavaRushInternship-Topjava-graduation)
+
 <p>Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) <strong>without frontend</strong>.</p>
 <p>The task is:</p>
 <p>Build a voting system for deciding where to have lunch.</p>
