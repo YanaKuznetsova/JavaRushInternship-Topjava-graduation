@@ -4,7 +4,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsova.topjava.lunchVotingSystem.TestUtil;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
@@ -69,6 +72,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getMenuForRestaurant() throws Exception {
         TestUtil.print(mockMvc.perform(get(REST_URL + "menu/" + RESTAURANT_ID)
                 .with(userHttpBasic(ADMIN)))
@@ -78,6 +82,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getMenuForDate() throws Exception {
         TestUtil.print(mockMvc.perform(get(REST_URL + "menu/date/" + MAY_30_2015)
                 .with(userHttpBasic(ADMIN)))
@@ -105,8 +110,11 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @DirtiesContext
+    @Transactional(propagation = Propagation.NEVER)
     void addDish() throws Exception {
         Dish newDish = new Dish(null, "New dish", 200);
+        newDish.setRestaurant(RESTAURANT_1);
         ResultActions action = mockMvc.perform(post(REST_URL + RESTAURANT_ID)
                 .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,6 +140,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void deleteDish() throws Exception {
         mockMvc.perform(delete(REST_URL + RESTAURANT_ID + "/" + DISH_ID)
                 .with(userHttpBasic(ADMIN)))
@@ -155,12 +164,15 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @DirtiesContext
+//    @Transactional(propagation = Propagation.NEVER)
     void updateDish() throws Exception {
         Dish updated = new Dish(DISH_R1_1);
+        updated.setRestaurant(RESTAURANT_1);
         updated.setName("UpdatedName");
         mockMvc.perform(put(REST_URL + RESTAURANT_ID + "/" + DISH_ID)
-                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 

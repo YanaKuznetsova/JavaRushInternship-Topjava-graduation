@@ -13,15 +13,17 @@ import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.RestaurantService;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
 import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.assureIdConsistent;
 import static ru.kuznetsova.topjava.lunchVotingSystem.util.ValidationUtil.checkNew;
+import static ru.kuznetsova.topjava.lunchVotingSystem.web.admin.AdminRestaurantRestController.REST_URL;
 
 @RestController
-@RequestMapping(AdminRestaurantRestController.REST_URL)
+@RequestMapping(REST_URL)
 public class AdminRestaurantRestController {
 
     static final String REST_URL = "/rest/admin/restaurants";
@@ -70,7 +72,7 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<Restaurant> addRestaurant(@Valid @RequestBody Restaurant restaurant) {
         log.info("add restaurant {}", restaurant);
         checkNew(restaurant);
         Restaurant newRestaurant = restaurantService.addRestaurant(restaurant);
@@ -80,14 +82,20 @@ public class AdminRestaurantRestController {
         return ResponseEntity.created(uriOfNewResource).body(newRestaurant);
     }
 
+    @GetMapping(value = "/dish/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Dish getDishById(@PathVariable("id") int id) throws NotFoundException {
+        log.info("get dish by id {}", id);
+        return restaurantService.getDishById(id);
+    }
+
     @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> addDish(@RequestBody Dish dish, @PathVariable("id") int id) {
+    public ResponseEntity<Dish> addDish(@Valid @RequestBody Dish dish, @PathVariable("id") int id) {
         log.info("add dish {} for restaurant {}", dish, id);
         checkNew(dish);
         Dish newDish = restaurantService.addDish(id, dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}/{dishId}")
-                .buildAndExpand(id, newDish.getId()).toUri();
+                .path(REST_URL + "/dish/{dishId}")
+                .buildAndExpand(newDish.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(newDish);
     }
 
@@ -107,7 +115,7 @@ public class AdminRestaurantRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable("id") int id) throws NotFoundException {
+    public void updateRestaurant(@Valid @RequestBody Restaurant restaurant, @PathVariable("id") int id) throws NotFoundException {
         log.info("update restaurant {} with id={}", restaurant, id);
         assureIdConsistent(restaurant, id);
         restaurantService.updateRestaurant(restaurant);
