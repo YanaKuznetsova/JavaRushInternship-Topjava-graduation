@@ -6,7 +6,7 @@
         <expiry>
             <ttl unit="minutes">5</ttl>
         </expiry>
-        <heap unit="entries">5000</heap>
+        <heap>5000</heap>
     </cache-template>
 
     <cache-template name="nonExpiryCache">

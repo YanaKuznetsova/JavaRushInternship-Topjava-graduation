@@ -3,10 +3,8 @@ package ru.kuznetsova.topjava.lunchVotingSystem.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.UserService;
-import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.ModificationRestrictionException;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
 import java.util.List;
@@ -47,8 +45,7 @@ public abstract class AbstractUserRestController {
     }
 
     public void update(User user, int id) throws NotFoundException {
-        int userId = SecurityUtil.authUserId();
-        log.info("update user {} with id {} for user with id = {}", user, id, userId);
+        log.info("update user {} for user with id = {}", user, id);
         assureIdConsistent(user, id);
         userService.update(user);
     }
@@ -57,12 +54,6 @@ public abstract class AbstractUserRestController {
         int userId = SecurityUtil.authUserId();
         log.info("get user by email {} for user with id = {}", email, userId);
         return userService.getByEmail(email);
-    }
-
-    private void checkModificationAllowed(int id) throws RuntimeException {
-        if (!userService.get(id).getRole().equals(Role.ROLE_ADMIN)) {
-            throw new ModificationRestrictionException();
-        }
     }
 
 }
