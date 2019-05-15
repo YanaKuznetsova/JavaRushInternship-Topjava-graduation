@@ -19,39 +19,28 @@
     <context:component-scan base-package="ru.kuznetsova.**.repository"/>
     <jpa:repositories base-package="ru.kuznetsova.**.repository"/>
 
-    <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
-    <bean id="dataSource"
-          class="org.apache.tomcat.jdbc.pool.DataSource"
-          p:driverClassName="org.postgresql.Driver"
-          p:url="${database.url}"
-          p:username="${database.username}"
-          p:password="${database.password}"/>
-
-    <!--&lt;!&ndash; Choose profile from (hsqldb, postgres) &ndash;&gt;-->
-    <!--<beans profile="hsqldb">-->
-    <!--<context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>-->
-
-    <!--&lt;!&ndash;no pooling&ndash;&gt;-->
-    <!--<bean restaurantId="dataSource"-->
-    <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-    <!--p:driverClassName="org.hsqldb.jdbcDriver"-->
-    <!--p:url="${database.url}"-->
-    <!--p:username="${database.username}"-->
-    <!--p:password="${database.password}"/>-->
-    <!--</beans>-->
-
-    <!--<beans profile="postgres">-->
+    <!--postgres-->
     <!--<context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>-->
 
-    <!--<bean restaurantId="dataSource"-->
+    <!--<bean id="dataSource"-->
     <!--class="org.apache.tomcat.jdbc.pool.DataSource"-->
     <!--p:driverClassName="org.postgresql.Driver"-->
     <!--p:url="${database.url}"-->
     <!--p:username="${database.username}"-->
     <!--p:password="${database.password}"/>-->
-    <!--</beans>-->
+    <!--postgres-->
 
+    <!--hsqldb-->
+    <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="org.hsqldb.jdbcDriver"
+          p:url="${database.url}"
+          p:username="${database.username}"
+          p:password="${database.password}"/>
+    <!--hsqldb-->
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"

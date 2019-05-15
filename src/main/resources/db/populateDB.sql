@@ -6,12 +6,12 @@ DELETE FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users (name, email, password, role) VALUES
-  ('User_1', 'user-1@yandex.ru', 'password1', 'ROLE_USER'),
-  ('User_2', 'user-2@yandex.ru', 'password2', 'ROLE_USER'),
-  ('User_3', 'user-3@yandex.ru', 'password3', 'ROLE_USER'),
-  ('User_4', 'user-4@yandex.ru', 'password4', 'ROLE_USER'),
-  ('User_5', 'user-5@yandex.ru', 'password5', 'ROLE_USER'),
-  ('Admin', 'admin@gmail.com', 'admin', 'ROLE_ADMIN');
+  ('User_1', 'user-1@yandex.ru', '{noop}password1', 'ROLE_USER'),
+  ('User_2', 'user-2@yandex.ru', '{noop}password2', 'ROLE_USER'),
+  ('User_3', 'user-3@yandex.ru', '{noop}password3', 'ROLE_USER'),
+  ('User_4', 'user-4@yandex.ru', '{noop}password4', 'ROLE_USER'),
+  ('User_5', 'user-5@yandex.ru', '{noop}password5', 'ROLE_USER'),
+  ('Admin', 'admin@gmail.com', '{noop}admin', 'ROLE_ADMIN');
 
 INSERT INTO restaurants (name, date) VALUES
   ('Dinner In The Sky', '2015-05-30'),
