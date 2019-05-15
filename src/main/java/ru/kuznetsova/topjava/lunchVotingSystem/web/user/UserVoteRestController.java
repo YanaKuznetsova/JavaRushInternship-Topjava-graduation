@@ -63,7 +63,6 @@ public class UserVoteRestController {
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/vote")
                 .build().toUri();
-//                .buildAndExpand(vote).toUri();
         return ResponseEntity.created(uriOfNewResource).body(vote);
     }
 
