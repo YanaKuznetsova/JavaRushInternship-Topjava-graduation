@@ -7,17 +7,24 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.kuznetsova.topjava.lunchVotingSystem.model.Dish;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
+import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.RatingService;
+import ru.kuznetsova.topjava.lunchVotingSystem.service.RestaurantService;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.SecurityUtil;
 
+import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
+import static ru.kuznetsova.topjava.lunchVotingSystem.web.user.UserVoteRestController.REST_URL;
+
 @RestController
-@RequestMapping(UserVoteRestController.REST_URL)
+@RequestMapping(REST_URL)
 public class UserVoteRestController {
 
     static final String REST_URL = "/rest/rating";
@@ -26,13 +33,16 @@ public class UserVoteRestController {
     @Autowired
     private RatingService ratingService;
 
-    @GetMapping(value = "/rating", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Autowired
+    private RestaurantService restaurantService;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Rating> getRatingForToday() throws NotFoundException {
         log.info("get rating for today");
         return ratingService.getRatingForToday();
     }
 
-    @GetMapping(value = "/rating/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Rating getRatingForRestaurantForToday(@PathVariable("id") int id) throws NotFoundException {
         log.info("get rating for restaurant {} for today", id);
         return ratingService.getRatingForRestaurantForToday(id);
@@ -46,15 +56,33 @@ public class UserVoteRestController {
     }
 
     @PostMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Integer> voteForRestaurant(@RequestBody Vote vote) {
+    public ResponseEntity<Vote> voteForRestaurant(@Valid @RequestBody Integer restaurantId) {
         int userId = SecurityUtil.authUserId();
-        Integer restaurantId = vote.getRestaurant().getId();
         log.info("add vote for restaurant {} by user {}", restaurantId, userId);
-        ratingService.voteForRestaurant(restaurantId, userId);
+        Vote vote = ratingService.voteForRestaurant(restaurantId, userId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/rating/{restaurantId}")
-                .buildAndExpand(restaurantId).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(restaurantId);
+                .path(REST_URL + "/vote")
+                .build().toUri();
+//                .buildAndExpand(vote).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(vote);
+    }
+
+    @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Restaurant> getAllRestaurantsForToday() throws NotFoundException {
+        log.info("get restaurants for today");
+        return restaurantService.getAllRestaurantsForToday();
+    }
+
+    @GetMapping(value = "/menu/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Dish> getMenuForRestaurant(@PathVariable("id") int id) throws NotFoundException {
+        log.info("get restaurants by restaurantId {} for today", id);
+        return restaurantService.getMenuForRestaurant(id);
+    }
+
+    @GetMapping(value = "/menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Dish> getMenuForToday() throws NotFoundException {
+        log.info("get menu for today");
+        return restaurantService.getMenuForToday();
     }
 
 }

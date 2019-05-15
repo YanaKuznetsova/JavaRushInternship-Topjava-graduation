@@ -3,20 +3,26 @@ package ru.kuznetsova.topjava.lunchVotingSystem.web.user;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.kuznetsova.topjava.lunchVotingSystem.TestUtil;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Rating;
+import ru.kuznetsova.topjava.lunchVotingSystem.model.Restaurant;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.Vote;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.RatingService;
+import ru.kuznetsova.topjava.lunchVotingSystem.service.RestaurantService;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.AbstractControllerTest;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.json.JsonUtil;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Collections;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.*;
+import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.assertMatchNewRatings;
+import static ru.kuznetsova.topjava.lunchVotingSystem.RatingTestData.getVoteMatcher;
 import static ru.kuznetsova.topjava.lunchVotingSystem.RestaurantTestData.*;
-import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.readFromJsonResultActions;
 import static ru.kuznetsova.topjava.lunchVotingSystem.TestUtil.userAuth;
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.USER_1;
 import static ru.kuznetsova.topjava.lunchVotingSystem.UserTestData.USER_ID;
@@ -29,26 +35,39 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private RestaurantService restaurantService;
+
     @Test
     void voteForRestaurant() throws Exception {
-        Vote newVote = ratingService.voteForRestaurant(RESTAURANT_ID, USER_ID, MAY_31_2015, DECISION_TIME.minusHours(1));
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTimeForTest = LocalDateTime.of(
+                now.getYear(),
+                now.getMonthValue(),
+                now.getDayOfMonth(),
+                DECISION_TIME.getHour() - 1,
+                now.getMinute()
+        );
 
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + "vote")
+        ratingService.setClockAndTimeZone(dateTimeForTest);
+        Restaurant testingRestaurant = new Restaurant(null, "TestingRestaurant", dateTimeForTest.toLocalDate());
+        restaurantService.addRestaurant(testingRestaurant);
+        testingRestaurant.setId(restaurantService.getAllRestaurantsForToday().get(0).getId());
+
+        ratingService.voteForRestaurant(testingRestaurant.getId(), USER_ID);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + "vote")
                 .with(userAuth(USER_1))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newVote)))
+                .content(JsonUtil.writeValue(testingRestaurant.getId())))
                 .andExpect(status().isCreated());
 
-        Vote returnedVote = readFromJsonResultActions(action, Vote.class);
-        newVote.setId(returnedVote.getId());
-
-        assertMatchVotes(returnedVote, newVote);
-        Rating newRating = new Rating(null, RESTAURANT_1, 1, MAY_31_2015);
-        assertMatchNewRatings(ratingService.getRatingForDate(MAY_31_2015),
-                List.of(newRating, RATING_R2_D31, RATING_R3_D31));
+        Rating newRating = new Rating(null, testingRestaurant, 1, dateTimeForTest.toLocalDate());
+        assertMatchNewRatings(ratingService.getRatingForDate(dateTimeForTest.toLocalDate()), Collections.singleton(newRating));
     }
 
     @Test
+    @DirtiesContext
     void getMenuForRestaurant() throws Exception {
         TestUtil.print(mockMvc.perform(get(REST_URL + "/menu/" + RESTAURANT_ID)
                 .with(userAuth(USER_1)))
@@ -59,8 +78,18 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void showCurrentVote() throws Exception {
-        Vote userVote = ratingService.voteForRestaurant(RESTAURANT_ID, USER_ID, LocalDate.now(),
-                DECISION_TIME.minusHours(1));
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTimeForTest = LocalDateTime.of(
+                now.getYear(),
+                now.getMonthValue(),
+                now.getDayOfMonth(),
+                DECISION_TIME.getHour() - 1,
+                now.getMinute()
+        );
+
+        ratingService.setClockAndTimeZone(dateTimeForTest);
+
+        Vote userVote = ratingService.voteForRestaurant(RESTAURANT_ID, USER_ID);
 
         TestUtil.print(mockMvc.perform(get(REST_URL + "/vote")
                 .with(userAuth(USER_1)))
