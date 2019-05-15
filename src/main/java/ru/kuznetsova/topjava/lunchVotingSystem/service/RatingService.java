@@ -12,8 +12,7 @@ import ru.kuznetsova.topjava.lunchVotingSystem.repository.RatingRepository;
 import ru.kuznetsova.topjava.lunchVotingSystem.repository.VoteRepository;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.List;
 
 import static ru.kuznetsova.topjava.lunchVotingSystem.model.Vote.DECISION_TIME;
@@ -24,20 +23,28 @@ public class RatingService {
 
     private final RatingRepository ratingRepository;
     private final VoteRepository voteRepository;
+    private Clock clock;
+    private ZoneId zoneId;
 
     @Autowired
     public RatingService(RatingRepository ratingRepository, VoteRepository voteRepository) {
         this.ratingRepository = ratingRepository;
         this.voteRepository = voteRepository;
+        this.clock = Clock.systemDefaultZone();
+        this.zoneId = ZoneId.systemDefault();
+    }
+
+    public void setClockAndTimeZone(LocalDateTime dateTime) {
+        this.clock = Clock.fixed(dateTime.atZone(zoneId).toInstant(), zoneId);
     }
 
     @CacheEvict(value = "rating", allEntries = true)
     public Vote voteForRestaurant(Integer restaurantId, Integer userId) {
-        return voteForRestaurant(restaurantId, userId, LocalDate.now(), LocalTime.now());
+        return voteForRestaurant(restaurantId, userId, LocalDate.now(clock), LocalTime.now(clock));
     }
 
     @Transactional
-    public Vote voteForRestaurant(Integer newRestaurantId, Integer userId, LocalDate date, LocalTime time) {
+    Vote voteForRestaurant(Integer newRestaurantId, Integer userId, LocalDate date, LocalTime time) {
         Assert.notNull(newRestaurantId, "newRestaurantId must not be null");
         Vote vote = null;
         if (time.isBefore(DECISION_TIME)) {
