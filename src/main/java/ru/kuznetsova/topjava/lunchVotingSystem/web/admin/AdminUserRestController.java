@@ -58,8 +58,8 @@ public class AdminUserRestController extends AbstractUserRestController {
 
     @Override
     @GetMapping(value = "/by", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User getByMail(@RequestParam("email") String email) throws NotFoundException {
-        return super.getByMail(email);
+    public User getByEmail(@RequestParam("email") String email) throws NotFoundException {
+        return super.getByEmail(email);
     }
 
 }

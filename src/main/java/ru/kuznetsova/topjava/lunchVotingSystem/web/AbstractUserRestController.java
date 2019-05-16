@@ -50,7 +50,7 @@ public abstract class AbstractUserRestController {
         userService.update(user);
     }
 
-    public User getByMail(String email) throws NotFoundException {
+    public User getByEmail(String email) throws NotFoundException {
         int userId = SecurityUtil.authUserId();
         log.info("get user by email {} for user with id = {}", email, userId);
         return userService.getByEmail(email);
