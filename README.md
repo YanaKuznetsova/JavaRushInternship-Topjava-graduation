@@ -1,9 +1,8 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e01e379b21444f60971c76a3fe23159e)](https://app.codacy.com/app/YanaKuznetsova/JavaRushInternship-Topjava-graduation?utm_source=github.com&utm_medium=referral&utm_content=YanaKuznetsova/JavaRushInternship-Topjava-graduation&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.com/YanaKuznetsova/JavaRushInternship-Topjava-graduation.svg?branch=master)](https://travis-ci.com/YanaKuznetsova/JavaRushInternship-Topjava-graduation)
 
-<p>Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) <strong>without frontend</strong>.</p>
-<p>The task is:</p>
-<p>Build a voting system for deciding where to have lunch.</p>
+<p>A voting system for deciding where to have lunch.</p>
+<p>REST API using Hibernate/Spring/SpringMVC <strong>without frontend</strong>.</p>
 <ul>
 <li>2 types of users: admin and regular users</li>
 <li>Admin can input a restaurant and it's lunch menu of the day (2-5 items usually, just a dish name and price)</li>
@@ -22,7 +21,7 @@
 ## REST API documentation
 
 ### Registration
-`curl -s -X POST -H http://localhost:8080/rest/register 'Content-Type: application/json; charset=UTF-8' -d '{"name":"NewUser", "email":"newUser@mail.com", "password":"password"}'`
+`curl -s -X POST -H http://localhost:8080/rest/register 'Content-Type: application/json; charset=UTF-8' -d '{ "name" : "NewUser", "email" : "newUser@mail.com", "password" : "{}password" }'curl -s -X POST -H http://localhost:8080/rest/register 'Content-Type: application/json; charset=UTF-8' -d '{ "name" : "NewUser", "email" : "newUser@mail.com", "password" : "{}password" }'`
 
 
 ### User
@@ -31,7 +30,7 @@ get profile <br>
 `curl -s http://localhost:8080/rest/profile --user user-1@yandex.ru:password1`
 
 update profile <br>
-`curl -s -X PUT http://localhost:8080/rest/profile --user user-1@yandex.ru:password1 -d '{"name":"New name", "email":"user-1@yandex.ru", "password":"password1"}' -H 'Content-Type:application/json;charset=UTF-8'` 
+`curl -s -X PUT http://localhost:8080/rest/profile --user user-1@yandex.ru:password1 -d '{"name":"New name", "email":"user-1@yandex.ru", "password":"{}password1"}' -H 'Content-Type:application/json;charset=UTF-8'` 
 
 delete profile <br>
 `curl -s -X DELETE http://localhost:8080/rest/profile --user user-1@yandex.ru:password1` 
@@ -68,10 +67,10 @@ get user with id 100001 <br>
 `curl -s http://localhost:8080/rest/admin/users/100001 --user admin@gmail.com:admin`
 
 add new user <br>
-`curl -s -X POST http://localhost:8080/rest/admin/users --user admin@gmail.com:admin -d '{"name":"NewUser", "email":"newUser@mail.com", "password":"password"}' -H 'Content-Type:application/json;charset=UTF-8'` 
+`curl -s -X POST http://localhost:8080/rest/admin/users --user admin@gmail.com:admin -d '{"name":"NewUser", "email":"newUser@mail.com", "password":"{}password"}' -H 'Content-Type:application/json;charset=UTF-8'curl -s -X POST http://localhost:8080/rest/admin/users --user admin@gmail.com:admin -d '{"name":"NewUser", "email":"newUser@mail.com", "password":"{}password"}' -H 'Content-Type:application/json;charset=UTF-8` 
 
 update user with id 100001 <br>
-`curl -s -X PUT http://localhost:8080/rest/admin/users/100001 --user admin@gmail.com:admin -d '{"name":"NewUser", "email":"newUser@mail.com", "password":"password"}' -H 'Content-Type:application/json;charset=UTF-8'` 
+`curl -s -X PUT http://localhost:8080/rest/admin/users/100001 --user admin@gmail.com:admin -d '{"name":"NewUser", "email":"email@mail.com", "password":"{}password"}' -H 'Content-Type:application/json;charset=UTF-8'` 
 
 get user with email admin@gmail.com <br>
 `curl -s http://localhost:8080/rest/admin/users/by?email=admin@gmail.com --user admin@gmail.com:admin`
@@ -118,7 +117,7 @@ update dish with id 100011 (it belongs to restaurant with id 100006) <br>
 `curl -s -X PUT http://localhost:8080/rest/admin/restaurants/100006/100011 --user admin@gmail.com:admin -d '{"name":"Updated name", "price":500}' -H 'Content-Type:application/json;charset=UTF-8'` 
 
 update restaurant with id 100006 <br>
-`curl -s -X PUT http://localhost:8080/rest/admin/restaurants/100006/100011 --user admin@gmail.com:admin -d '{"name":"Updated name", "date":"2015-05-30"}' -H 'Content-Type:application/json;charset=UTF-8'` 
+`curl -s -X PUT http://localhost:8080/rest/admin/restaurants/100006 --user admin@gmail.com:admin -d '{"name":"Updated name", "date":"2015-05-30"}' -H 'Content-Type:application/json;charset=UTF-8'` 
 
 
 #### Rating:

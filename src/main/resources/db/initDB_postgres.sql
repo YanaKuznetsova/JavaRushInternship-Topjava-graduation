@@ -14,7 +14,7 @@ CREATE TABLE users
   email            VARCHAR(255)            NOT NULL,
   password         VARCHAR(255)            NOT NULL,
   registered       TIMESTAMP DEFAULT now() NOT NULL,
-  role             VARCHAR(255)            NOT NULL
+  role             VARCHAR(255)
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 

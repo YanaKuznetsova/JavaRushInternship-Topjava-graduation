@@ -54,7 +54,7 @@ public class UserVoteRestController {
         return ratingService.getVoteForUserForDate(userId, LocalDate.now());
     }
 
-    @PostMapping(value = "/vote/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/vote/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> voteForRestaurant(@PathVariable("id") int id) {
         int userId = SecurityUtil.authUserId();
         log.info("add vote for restaurant {} by user {}", id, userId);
