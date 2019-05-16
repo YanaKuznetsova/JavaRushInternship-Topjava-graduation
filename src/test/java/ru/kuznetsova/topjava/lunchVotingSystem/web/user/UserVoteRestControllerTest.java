@@ -52,11 +52,12 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
         ratingService.setClockAndTimeZone(dateTimeForTest);
         Restaurant testingRestaurant = new Restaurant(null, "TestingRestaurant", dateTimeForTest.toLocalDate());
         restaurantService.addRestaurant(testingRestaurant);
-        testingRestaurant.setId(restaurantService.getAllRestaurantsForToday().get(0).getId());
+        int restaurantId = restaurantService.getAllRestaurantsForToday().get(0).getId();
+        testingRestaurant.setId(restaurantId);
 
-        ratingService.voteForRestaurant(testingRestaurant.getId(), USER_ID);
+        ratingService.voteForRestaurant(restaurantId, USER_ID);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + "vote")
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + "vote/" + restaurantId)
                 .with(userAuth(USER_1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(testingRestaurant.getId())))

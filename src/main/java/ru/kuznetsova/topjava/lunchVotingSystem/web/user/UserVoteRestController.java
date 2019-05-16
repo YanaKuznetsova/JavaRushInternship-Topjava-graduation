@@ -16,7 +16,6 @@ import ru.kuznetsova.topjava.lunchVotingSystem.service.RestaurantService;
 import ru.kuznetsova.topjava.lunchVotingSystem.util.exception.NotFoundException;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.SecurityUtil;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -55,11 +54,11 @@ public class UserVoteRestController {
         return ratingService.getVoteForUserForDate(userId, LocalDate.now());
     }
 
-    @PostMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Vote> voteForRestaurant(@Valid @RequestBody Integer restaurantId) {
+    @PostMapping(value = "/vote/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Vote> voteForRestaurant(@PathVariable("id") int id) {
         int userId = SecurityUtil.authUserId();
-        log.info("add vote for restaurant {} by user {}", restaurantId, userId);
-        Vote vote = ratingService.voteForRestaurant(restaurantId, userId);
+        log.info("add vote for restaurant {} by user {}", id, userId);
+        Vote vote = ratingService.voteForRestaurant(id, userId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/vote")
                 .build().toUri();
