@@ -13,6 +13,8 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import static ru.kuznetsova.topjava.lunchVotingSystem.model.Role.ROLE_USER;
+
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users",
@@ -48,7 +50,6 @@ public class User extends AbstractEntity implements Serializable {
 
     @Column(name = "role")
     @Enumerated(value = EnumType.STRING)
-    @NotNull
     private Role role;
 
     public User() {
@@ -63,19 +64,21 @@ public class User extends AbstractEntity implements Serializable {
     }
 
     public User(Integer id, String name, String email, String password, Role role, LocalDateTime registered) {
-        super(id, name);
-        this.email = email;
-        this.password = password;
+        this(id, name, email, password, role);
         this.registered = registered;
-        this.role = role;
     }
 
     public User(Integer id, String name, String email, String password, Role role) {
+        this(id, name, email, password);
+        this.role = role;
+    }
+
+    public User(Integer id, String name, String email, String password) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.registered = LocalDateTime.now();
-        this.role = role;
+        this.role = ROLE_USER;
     }
 
     public String getEmail() {

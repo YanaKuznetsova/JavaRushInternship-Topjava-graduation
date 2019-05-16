@@ -27,7 +27,7 @@ class RootControllerTest extends AbstractControllerTest {
 
     @Test
     void register() throws Exception {
-        User newUser = new User(null, "NewUser", "new_email@email.com", "12345678", Role.ROLE_USER);
+        User newUser = new User(null, "NewUser", "new_email@email.com", "12345678");
 
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
