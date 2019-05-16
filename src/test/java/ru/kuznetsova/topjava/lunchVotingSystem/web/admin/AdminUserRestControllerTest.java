@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.kuznetsova.topjava.lunchVotingSystem.TestUtil;
-import ru.kuznetsova.topjava.lunchVotingSystem.model.Role;
 import ru.kuznetsova.topjava.lunchVotingSystem.model.User;
 import ru.kuznetsova.topjava.lunchVotingSystem.service.UserService;
 import ru.kuznetsova.topjava.lunchVotingSystem.web.AbstractControllerTest;
@@ -68,7 +67,7 @@ class AdminUserRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testCreate() throws Exception {
-        User expected = new User(null, "New", "new@gmail.com", "newPassword", Role.ROLE_USER);
+        User expected = new User(null, "New", "new@gmail.com", "newPassword");
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
